@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "aframe";
 import StartScreen from "./components/StartScreen";
+import LastScreenQR from "./components/LastScreenQR";
 function App() {
   return (
     <div className="App">
@@ -9,7 +10,7 @@ function App() {
         <a-sky color="#222" src="/assets/sky2.png"></a-sky>
       </a-scene> */}
       <StartScreen />
-
+      {/* <LastScreenQR/> */}
     </div>
   );
 }

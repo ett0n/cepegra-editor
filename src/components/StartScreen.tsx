@@ -5,7 +5,8 @@ const StartScreen = () => {
         <>
         <div className="m-10 flex flex-col justify-center items-center">
             <h1 className="m-4 text-center justify-center">Nom du creator</h1>
-            {/* */}
+
+            {/* --------- Formulaire --------- */}
             <div className=" grid grid-cols-2 m-20 gap-12 shadow-lg p-20 rounded-lg">
                 <div className="grid">
                     <label htmlFor="">Pseudo</label>
@@ -24,9 +25,13 @@ const StartScreen = () => {
                     <input  type="text" placeholder="Confirmer mot de passe " className="input input-bordered w-full max-w-xs " />
                 </div>
             </div>
-            <button className="btn">Créer nouveau perso</button>
 
+            {/* --------- Button --------- */}
+            <button className="btn">Créer nouveau perso</button>
+            <br />
+            <p>Déjà inscrit ? <a className="underline underline-offset-auto" href="">C'est par ici !</a></p>
         </div>
+        {/* --------- Footer --------- */}
         <FooterComponent/>
         </>
     )

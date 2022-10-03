@@ -4,7 +4,7 @@ const StartScreen = () => {
     return (
         <>
         <div className="m-10 flex flex-col justify-center items-center">
-            <h1 className="m-4 text-center justify-center">Nom du creator</h1>
+            <h1 className="m-3 text-center justify-center text-4xl font-bold">Nom du creator</h1>
             {/* ------- Formulaire ------- */}
             <form className=" grid grid-cols-2 justify-center m-20 gap-12 shadow-lg p-20 rounded-lg">
                 <div className="grid">

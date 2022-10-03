@@ -9,7 +9,10 @@ const LastScreenQR = () => {
                 <figure className="p-10 flex justify-end">
                     <img src="http://placekitten.com/g/400/600" alt="" />
                 </figure>
-                <p className="p-20 text-2xl italic text-center">N'oublie pas d'aller récupérer ton QR code !</p>
+                <div className="flex flex-col justify-center items-center">
+                    <p>Pseudo</p>
+                    <p className="p-10 text-2xl italic text-center">N'oublie pas d'aller récupérer ton QR code au stand !</p>
+                </div>
             </div>
         </div>
         <FooterComponent/>

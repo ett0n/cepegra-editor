@@ -9,6 +9,7 @@ function App() {
         <a-sky color="#222" src="/assets/sky2.png"></a-sky>
       </a-scene> */}
       <button className="btn btn-info">Info</button>
+      <button className="btn">Button</button>
     </div>
   );
 }

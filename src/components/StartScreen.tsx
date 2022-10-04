@@ -1,5 +1,16 @@
+// ------------- I M P O R T ------------- 
 import FooterComponent from "./FooterComponent"
-import LogoComponent from "./FooterComponent"
+
+
+// ------------- R E A C T I O N ------------- 
+
+  // - - -  au click - - -
+    const handleSubmit = (ev:React.FormEvent<HTMLInputElement>) => {
+        ev.preventDefault();
+    };
+
+
+// ------------- R E N D U ------------- 
 const StartScreen = () => {
     return (
         <>

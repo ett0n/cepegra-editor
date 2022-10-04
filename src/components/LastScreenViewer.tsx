@@ -1,9 +1,15 @@
 // ------------- I M P O R T ------------- 
+
 import FooterComponent from "./FooterComponent"
 
-// ------------- R E N D U ------------- 
+// ------------- I N I T I A L I S A T I O N ------------- 
 
-const LastScreenQR = () => {
+// ------------- R E A C T I O N ------------- 
+
+
+
+// ------------- R E N D U ------------- 
+const LastScreenViewer = () => {
     return (
         <>
         <div className="grid m-20 ">
@@ -14,7 +20,7 @@ const LastScreenQR = () => {
                 </figure>
                 <div className="flex flex-col justify-center items-center">
                     <p>Pseudo</p>
-                    <p className="p-10 text-2xl italic text-center">N'oublie pas d'aller récupérer ton QR code au stand !</p>
+                    <p className="p-10 text-2xl italic text-center">Rendez-vous dans le viewer !</p>
                 </div>
             </div>
         </div>
@@ -24,4 +30,4 @@ const LastScreenQR = () => {
     )
 }
 
-export default LastScreenQR
+export default LastScreenViewer

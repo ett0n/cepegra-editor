@@ -1,3 +1,83 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+$primary-color: #f49e42;
+$scale: 1;
+$squareSize: 50px;
+$cornerSize: ceil($squareSize / $scale);
+$cornerPosition: 10px;
+
+
+
+@keyframes dyinglight {
+    15%{
+        transform: scale(1.5);
+    }
+    50%{
+        transform: rotate(-89deg);
+    }
+    100%{
+        transform: rotate(-90deg);
+    }
+};
+
+.dl {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: inline-block;
+}
+
+.dl__container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    transform-origin: 50% 50% 0;
+    animation: dyinglight 1s ease infinite;
+    backface-visibility: hidden;
+}
+
+.dl__corner--top:before,
+.dl__corner--top:after,
+.dl__corner--bottom:before,
+.dl__corner--bottom:after {
+    position: absolute;
+    width: $cornerSize;
+    height: $cornerSize;
+    color: $primary-color;
+    content: '';
+}
+
+.dl__corner--top{
+    &:before {
+        border-left: 5px solid;
+        border-top: 5px solid;
+        top: -$cornerPosition;
+        left: -$cornerPosition;
+    }
+    &:after {
+        border-right: 5px solid;
+        border-top: 5px solid;
+        top: -$cornerPosition;
+        right: -$cornerPosition;
+    }
+}
+
+.dl__corner--bottom {
+    &:before {
+        border-left: 5px solid;
+        border-bottom: 5px solid;
+        bottom: -$cornerPosition;
+        left: -$cornerPosition;
+    }
+    &:after {
+        border-right: 5px solid;
+        border-bottom: 5px solid;
+        bottom: -$cornerPosition;
+        right: -$cornerPosition;
+    }
+}

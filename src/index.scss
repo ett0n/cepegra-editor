@@ -4,9 +4,9 @@
 
 $primary-color: #f49e42;
 $scale: 1;
-$squareSize: 50px;
+$squareSize: 3rem;
 $cornerSize: ceil($squareSize / $scale);
-$cornerPosition: 10px;
+$cornerPosition: 1rem;
 
 
 
@@ -54,14 +54,14 @@ $cornerPosition: 10px;
 
 .dl__corner--top{
     &:before {
-        border-left: 5px solid;
-        border-top: 5px solid;
+        border-left: .5rem solid;
+        border-top: .5rem solid;
         top: -$cornerPosition;
         left: -$cornerPosition;
     }
     &:after {
-        border-right: 5px solid;
-        border-top: 5px solid;
+        border-right: .5rem solid;
+        border-top: .5rem solid;
         top: -$cornerPosition;
         right: -$cornerPosition;
     }
@@ -69,14 +69,14 @@ $cornerPosition: 10px;
 
 .dl__corner--bottom {
     &:before {
-        border-left: 5px solid;
-        border-bottom: 5px solid;
+        border-left: .5rem solid;
+        border-bottom: .5rem solid;
         bottom: -$cornerPosition;
         left: -$cornerPosition;
     }
     &:after {
-        border-right: 5px solid;
-        border-bottom: 5px solid;
+        border-right: .5rem solid;
+        border-bottom: .5rem solid;
         bottom: -$cornerPosition;
         right: -$cornerPosition;
     }

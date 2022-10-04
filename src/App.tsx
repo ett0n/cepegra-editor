@@ -4,7 +4,7 @@ import "aframe";
 import StartScreen from "./components/StartScreen";
 import LastScreenQR from "./components/LastScreenQR";
 import LastScreenViewer from "./components/LastScreenViewer";
-import Loading from "./components/Loading";
+import LoadingScreen from "./components/LoadingScreen";
 
 // ------------- R E N D U ------------- 
 function App() {
@@ -14,10 +14,10 @@ function App() {
         <a-box src="https://i.imgur.com/mYmmbrp.jpg" position="0 2 -5" rotation="0 45 45" scale="2 2 2"></a-box>
         <a-sky color="#222" src="/assets/sky2.png"></a-sky>
       </a-scene> */}
-      {/* <StartScreen /> */}
+      <StartScreen />
       {/* <LastScreenQR/> */}
       {/* <LastScreenViewer/> */}
-      <Loading/>
+      {/* <LoadingScreen/> */}
 
     </div>
   );

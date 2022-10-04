@@ -3,7 +3,7 @@ import FooterComponent from "./FooterComponent"
 
 // ------------- R E N D U ------------- 
 
-const Loading = () => {
+const LoadingScreen = () => {
     return (
         <>
         <div className="grid m-20 justify-center ">
@@ -28,4 +28,4 @@ const Loading = () => {
     )
 }
 
-export default Loading
+export default LoadingScreen

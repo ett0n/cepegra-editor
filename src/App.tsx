@@ -15,7 +15,7 @@ function Taupiqueur() {
   const gltf = useGLTF("/assets/images/diglett_pokemon.glb");
   const [hovered, hover] = useState(false);
   const [clicked, click] = useState(false);
-    useFrame((state, delta) => (ref.current.rotation.y += 0.0015));
+    useFrame((state, delta) => (ref.current.rotation.y += 0.0002));
 
 
     // test //
@@ -53,7 +53,7 @@ function Taupiqueur() {
         color={clicked ? "limegreen" : "green"}
         >
         </meshStandardMaterial>
-        <planeGeometry args={[100, 100]}/>
+        <circleGeometry args={[100, 100]}/>
     </mesh>
     </>
   );

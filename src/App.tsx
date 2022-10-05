@@ -4,7 +4,7 @@ import { Canvas, useFrame, useLoader} from "@react-three/fiber";
 import { useGLTF, OrbitControls} from "@react-three/drei";
 import { AnimationClip, TextureLoader } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-
+import DragDrop from "./components/dragndrop/DragDrop";
 
 const sol = "/assets/images/grass.png"
 
@@ -13,7 +13,7 @@ function Taupiqueur() {
   const ref = useRef<THREE.Mesh>(null!);
   const texture = useLoader(TextureLoader, sol);
   const day = useLoader(TextureLoader,'/assets/images/sky.png');
-  const night = useLoader(TextureLoader,'/assets/sky2.png');
+  const night = useLoader(TextureLoader,'/assets/images/sky_2.png');
   
   const gltf = useGLTF("/assets/images/diglett_pokemon.glb");
   mixer = new THREE.AnimationMixer(gltf.scene);
@@ -23,7 +23,6 @@ function Taupiqueur() {
   });
 
   const gltf2 = useGLTF("/assets/images/lumberjack.glb");
-  
 
   const [hovered, hover] = useState(false);
   const [clicked, click] = useState(false);
@@ -39,8 +38,11 @@ function Taupiqueur() {
       <meshStandardMaterial map={clicked ? day : night} side={THREE.DoubleSide}/>
       <sphereGeometry/>
     </mesh>
+
     <mesh scale={clicked ? 10 : 5} >
-        <primitive position= {[0, 1, 0]} object= {clicked ? gltf2.scene: gltf.scene} />
+        {/* <primitive position= {[0, 1, 0]} object= {clicked ? gltf2.scene: gltf.scene} /> */}
+      <DragDrop />
+
     </mesh>
 
     <mesh onPointerOver={() => hover(true)} onPointerOut={() => hover(false)} rotation={[-Math.PI / 2, 0, 0]} >
@@ -52,7 +54,6 @@ function Taupiqueur() {
     </>
   );
 }
-
 
 export default function App() {
   return (

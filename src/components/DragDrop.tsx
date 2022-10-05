@@ -22,11 +22,7 @@ export default function DragDrop() {
     return (
       <>
         <mesh position={position} scale={1} {...bind()} ref={ref}>
-          
-         <spotLight intensity={1.2} position={[30, 30, 50]} angle={0.2}  castShadow />
         <primitive object={gltf.scene}/>
-            <meshLambertMaterial attach="material"/>
-
         </mesh>
       </>
     )

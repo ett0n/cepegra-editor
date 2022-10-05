@@ -1,10 +1,9 @@
 import * as THREE from "three";
-import { useRef, useState, useEffect, Suspense } from "react";
+import { useRef, useState} from "react";
 import { Canvas, useFrame, useLoader} from "@react-three/fiber";
 import { useGLTF, OrbitControls} from "@react-three/drei";
-import { AnimationClip, TextureLoader } from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import DragDrop from "./components/dragndrop/DragDrop";
+import { TextureLoader } from "three";
+import DragDrop from "../components/DragDrop";
 
 const sol = "/assets/images/grass.png"
 

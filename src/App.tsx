@@ -7,7 +7,7 @@ import { TextureLoader } from "three";
 function Taupiqueur() {
   const ref = useRef<THREE.Mesh>(null!);
   const texture = useLoader(TextureLoader,
-    '/assets/images/clouds-sky-anime.jpg ');
+    '/assets/images/grass.jpeg ');
   const gltf = useGLTF("/assets/images/diglett_pokemon.glb");
   const [hovered, hover] = useState(false);
   const [clicked, click] = useState(false);
@@ -24,7 +24,7 @@ function Taupiqueur() {
 
     <mesh onPointerOver={() => hover(true)} onPointerOut={() => hover(false)} rotation={[-Math.PI / 2, 0, 0]} >
         <meshStandardMaterial map={texture}
-        color={hovered ? "hotpink" : "red"}
+        //color={hovered ? "hotpink" : "red"}
         >
         </meshStandardMaterial>
         <planeGeometry args={[100, 100]} />

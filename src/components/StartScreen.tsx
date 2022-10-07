@@ -1,6 +1,8 @@
 // ------------- I M P O R T ------------- 
-import {useState} from "react";
-import FooterComponent from "./FooterComponent"
+import {useState, useEffect} from "react";
+import Axios from "axios";
+import FooterComponent from "./FooterComponent";
+import QrGenerator from "./QrGenerator";
 
 interface UserSignIn {
     pseudo: string;
@@ -15,16 +17,24 @@ interface Msg {
     confirm: string;
 }
 
+interface ApiUser {
+    id: number;
+    pseudo: string
+}
+
 const StartScreen: React.FC = () => {
     // ------------- S T A T E ------------- 
-    const [user, setUser] = useState<UserSignIn[]>([
-        {pseudo: "kevin", mail: "", password: "pass"}
-    ])
+    const [user, setUser] = useState<UserSignIn>({
+        pseudo: "",
+        mail: "",
+        password: ""
+    })
     const [userInput, setUserInput] = useState<UserSignIn>({
         pseudo: "",
         mail: "",
         password: ""
     });
+    const [apiUser, setApiUser] = useState<ApiUser[]>([]);
     const [confirmPass, setConfirmPass] = useState<string>();
     const msg:Msg = {
             pseudo: "pseudo déjà utilisé",
@@ -33,27 +43,45 @@ const StartScreen: React.FC = () => {
             confirm: "confirmation incorrecte",
         }
 
-
-    // ------------- R E A C T I O N ------------- 
+    useEffect(() => {
+        getDatas();
+    }, []);
         
-        // - - -  au click - - -
+ 
+    // ------------- R E A C T I O N ------------- 
+        // - - - fetch - - -
+        const getDatas = async () => {
+            const apiDatas = await Axios.get('http://xrlab.cepegra.be:1337/api/appusers?populate=*');
+            const tableUsers = apiDatas.data.data.map( (u: { id: any; attributes: { pseudo: any; }; })  => {return {id: u.id, pseudo : u.attributes.pseudo}})
+            setApiUser(tableUsers);
+        };    
+
+        // - - -  au submit - - -
         const handleSubmit = (ev:React.FormEvent) => {
             ev.preventDefault();
             if(confirmPass === userInput.password) {
                 alert("password identique")
-                setUser([
-                    ...user,
+                setUser(
                     {
                       pseudo: userInput.pseudo,
                       mail: userInput.mail,
                       password: userInput.password
                     }
-                  ]);
+                );
+                document.querySelector('.inputConfirm').classList.add('input-success')
+                setUserInput({ pseudo: "", mail: "", password: "" });
+                setConfirmPass("")
+
+                //vérifier si user est pas vide
 
                 // -> Quand POST dispo, poster user dans API
 
-                setUserInput({ pseudo: "", mail: "", password: "" });
-                setConfirmPass("")
+                //Fetch id du user qu'on vient de post
+
+                //Générer le qr code + imprimer
+                
+                //switch vers scene en ayant récupéré l'id du nouvel utilisateur
+                
             } else {
                 alert("password wrong")
                 document.querySelector(".errConfirm").classList.remove('opacity-0')
@@ -66,9 +94,7 @@ const StartScreen: React.FC = () => {
         const handlePseudoChange = (ev:React.FormEvent) => {
             //console.log(ev);
             const target = ev.target as HTMLInputElement; //typescript fix: value does not
-            //Faire un test pour savoir si unique
             setUserInput({ ...userInput, pseudo: target.value });
-            //si pas unique: msg error pseudo
         };
 
         const handleMailChange = (ev:React.FormEvent) => {
@@ -89,6 +115,54 @@ const StartScreen: React.FC = () => {
             setConfirmPass(target.value);
         };
 
+        // - - - on blur - - -
+        const handlePseudoBlur = () => {
+            //Faire un test pour savoir si unique
+            const apiUserCopy = [...apiUser]
+            if (apiUserCopy.find(el => el.pseudo === userInput.pseudo)) {
+                //si pas unique: msg error pseudo
+                //tester si vide ou non
+                document.querySelector(".errPseudo").classList.remove('opacity-0')
+                document.querySelector('.inputPseudo').classList.add('input-error')
+                setUserInput({ pseudo: "", mail: "", password: "" });
+            } else {
+                document.querySelector(".errPseudo").classList.add('opacity-0')
+                document.querySelector('.inputPseudo').classList.remove('input-error')
+                document.querySelector('.inputPseudo').classList.add('input-success')
+                }
+        }
+
+         const handleMailBlur = () => {
+        //     //test regex
+        //     const pattern = "@globex\.com"
+        //     let result = pattern.test(userInput.mail)
+        //     if (result){
+                 document.querySelector('.inputMail').classList.add('input-success')
+        //     } else {
+        //         document.querySelector('.inputMail').classList.add('input-error')
+        //     }
+         }
+
+        const handlePassBlur = () => {
+            const pattern = /(?=.[A-Za-z])(?=.\d)[A-Za-z\d]{8,10}/
+            //const result: boolean = pattern.test(userInput.mail!)
+            if (pattern.test(userInput.mail!)) {
+                alert("pass correct")
+                document.querySelector('.inputPass').classList.add('input-success')
+            } else {
+                alert("pass incorrect")
+                document.querySelector(".errPass").classList.remove('opacity-0')
+                document.querySelector('.inputPass').classList.add('input-error')
+            }
+        }
+
+        // - - - au click - - -
+        const handleClick = (ev:React.FormEvent) => {
+            ev.preventDefault();
+            window.location.href = 'SecondConnexionScreen'
+        }
+
+
     // ------------- R E N D U ------------- 
     //console.log(user)
     return (
@@ -99,17 +173,17 @@ const StartScreen: React.FC = () => {
             <form className=" grid grid-cols-2 justify-center m-20 gap-12 shadow-lg p-20 rounded-lg" onSubmit={handleSubmit}>
                 <div className="grid">
                     <label htmlFor="">Pseudo</label>
-                    <input value={userInput.pseudo}  type="text" placeholder="Pseudo" className="inputPseudo input input-bordered w-full max-w-xs " onChange={handlePseudoChange} />
+                    <input value={userInput.pseudo}  type="text" placeholder="Pseudo" className="inputPseudo input input-bordered w-full max-w-xs " required onBlur={handlePseudoBlur} onChange={handlePseudoChange} />
                     <p className="errPseudo opacity-0">{msg.pseudo}</p>
                 </div>
                 <div className="grid">
                     <label htmlFor="">Mail</label>
-                    <input value={userInput.mail}  type="email" placeholder="Mail" className="inputMail input input-bordered w-full max-w-xs " onChange={handleMailChange} />
+                    <input value={userInput.mail}  type="email" placeholder="Mail" className="inputMail input input-bordered w-full max-w-xs " onBlur={handleMailBlur} onChange={handleMailChange} />
                     <p className="errMail opacity-0">{msg.mail}</p>
                 </div>
                 <div className="grid">
                     <label htmlFor="">Mot de passe</label>
-                    <input value={userInput.password}  type="password" placeholder="Mot de passe" className="inputPass input input-bordered w-full max-w-xs " onChange={handlePasswordChange} />
+                    <input value={userInput.password}  type="password" placeholder="Mot de passe" className="inputPass input input-bordered w-full max-w-xs " pattern="(?=.[A-Za-z])(?=.\d)[A-Za-z\d]{8,10}" onBlur={handlePassBlur} onChange={handlePasswordChange} />
                     <p className="errPass opacity-0">{msg.password}</p>
                 </div>
                 <div className="grid">
@@ -122,7 +196,7 @@ const StartScreen: React.FC = () => {
             </form>
 
             {/* ------- Déjà inscrit ? ------- */}
-            <p>Déjà inscrit ? <a className="underline" href="">C'est par ici ! </a></p>
+            <p>Déjà inscrit ? <a className="underline" href="#" onClick={handleClick}>C'est par ici ! </a></p>
         </div>
         <FooterComponent/>
         </>

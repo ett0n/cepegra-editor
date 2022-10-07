@@ -1,14 +1,9 @@
 // ------------- I M P O R T ------------- 
 import {useState, useEffect} from "react";
 import Axios from "axios";
+import type { UserSignIn } from "../types/UserSignin";
 import FooterComponent from "./FooterComponent";
 import QrGenerator from "./QrGenerator";
-
-interface UserSignIn {
-    pseudo: string;
-    mail?: string;
-    password: string
-}
 
 interface Msg {
     pseudo: string;
@@ -22,9 +17,9 @@ interface ApiUser {
     pseudo: string
 }
 
-const StartScreen: React.FC = () => {
+const StartScreen: React.FC<props> = ({handleAddUser}) => {
     // ------------- S T A T E ------------- 
-    const [user, setUser] = useState<UserSignIn>({
+    const [newUser, setNewUser] = useState<UserSignIn>({
         pseudo: "",
         mail: "",
         password: ""
@@ -61,7 +56,7 @@ const StartScreen: React.FC = () => {
             ev.preventDefault();
             if(confirmPass === userInput.password) {
                 alert("password identique")
-                setUser(
+                setNewUser(
                     {
                       pseudo: userInput.pseudo,
                       mail: userInput.mail,
@@ -73,6 +68,9 @@ const StartScreen: React.FC = () => {
                 setConfirmPass("")
 
                 //vérifier si user est pas vide
+
+                //Passer les données du user dans APP
+                handleAddUser(newUser)
 
                 // -> Quand POST dispo, poster user dans API
 

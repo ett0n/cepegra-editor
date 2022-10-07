@@ -5,7 +5,7 @@
 $primary-color: #f49e42;
 $scale: 1;
 $squareSize: 3rem;
-$cornerSize: ceil($squareSize / $scale);
+$cornerSize: calc($squareSize / $scale);
 $cornerPosition: 1rem;
 
 

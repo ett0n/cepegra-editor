@@ -10,13 +10,10 @@ export default function DragDrop() {
     const [position, setPosition] = useState([0, 0, 0]);
     const { size, viewport } = useThree();
     const aspect = size.width / viewport.width;
-    useFrame(() => {
-        // ref.current.rotation.z += 0.01
-        ref.current.rotation.y += 0.01 
-    });
+
     const bind = useDrag(({active,  offset: [x, y] }) => {
       const [,, z] = position;
-        setPosition([x / aspect, -y / aspect, z]);
+        setPosition([x / 5/ aspect, -y /5/ aspect, 1]);
     });
 
     return (

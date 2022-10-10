@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { useRef, useState} from "react";
 import { Canvas, useFrame, useLoader} from "@react-three/fiber";
-import { useGLTF, OrbitControls} from "@react-three/drei";
+import { useGLTF, OrbitControls, PointerLockControls, FlyControls} from "@react-three/drei";
 import { TextureLoader } from "three";
 import DragDrop from "../components/DragDrop";
 
@@ -57,9 +57,9 @@ function Taupiqueur() {
 export default function App() {
   return (
     <div id="canvas-container">
-      <Canvas camera={{ fov: 75, position: [5, 15, 5] }}>
+      <Canvas camera={{ fov:90, position: [15, 1, 5] }}>
 
-      <OrbitControls target={[1, 1, 0]} maxPolarAngle={1.45} />
+      <FlyControls position={[0, 20, 1]} />
         <ambientLight position={[0, 5, 6]} intensity={2}/>
         <Taupiqueur></Taupiqueur>
       </Canvas>

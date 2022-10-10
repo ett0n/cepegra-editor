@@ -58,9 +58,10 @@ function Taupiqueur() {
 export default function App() {
   return (
     <>
+     <Menu/>
     <div id="canvas-container">
-      <Menu/>
-      <Canvas camera={{ fov:90, position: [0, 4, 60] }}>
+     
+      <Canvas id="connard" camera={{ fov:90, position: [0, 4, 60] }}>
       
       {/* <FlyControls position={[0, 20, 1]} /> */}
         <ambientLight position={[0, 5, 6]} intensity={2}/>

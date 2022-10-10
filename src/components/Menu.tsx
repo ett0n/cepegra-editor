@@ -1,11 +1,21 @@
 import * as THREE from "three";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useDrag } from "@use-gesture/react";
 import { useGLTF} from "@react-three/drei";
 import { useFrame, useThree} from "@react-three/fiber";
 
 export default function menu() {
-  
+    
+    useEffect (() =>{
+        const connasse = document.getElementById("connard");
+    connasse?.addEventListener("dragenter", () =>{
+    console.log("pupute")
+    }),[]}) 
+
+
+
+    
+ 
 
     return (
       <>

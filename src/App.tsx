@@ -18,11 +18,11 @@ const App: React.FC = () => {
 
   // ------------- R E A C T I O N ------------- 
   //form
-  const handleAddUser = (newUser) => {
+  const handleAddUser = (newUser: UserSignIn) => {
     setUser(newUser);
   };
 
-
+  console.log("App user from props: ", user)
   // ------------- R E N D U ------------- 
   return (
     <div className="App">

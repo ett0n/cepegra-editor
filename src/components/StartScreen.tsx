@@ -45,60 +45,60 @@ const StartScreen: React.FC<props> = ({handleAddUser}) => {
             confirm: "Confirmation incorrecte",
         })
 
-    useEffect(() => {
-        getDatas();
-    }, []);
+    // useEffect(() => {
+    //     getDatas();
+    // }, []);
 
    
     // ------------- R E A C T I O N ------------- 
         // - - - fetch - - -
-        const getDatas = async () => {
-            const apiDatas = await Axios.get('http://xrlab.cepegra.be:1337/api/appusers?populate=*');
-            const tableUsers = apiDatas.data.data.map( (u: { id: any; attributes: { pseudo: any; }; })  => {return {id: u.id, pseudo : u.attributes.pseudo}})
-            setApiUser(tableUsers);
-        };
+        // const getDatas = async () => {
+        //     const apiDatas = await Axios.get('http://xrlab.cepegra.be:1337/api/appusers?populate=*');
+        //     const tableUsers = apiDatas.data.data.map( (u: { id: any; attributes: { pseudo: any; }; })  => {return {id: u.id, pseudo : u.attributes.pseudo}})
+        //     setApiUser(tableUsers);
+        // };
 
         const getUserValue = async () => {
-            //const checkUser = await Axios.get(`http://xrlab.cepegra.be:1337/api/appusers?filters[pseudo][$eqi]=${userInput.pseudo}`);
-            //console.log(checkUser)
+            const checkUser = await Axios.get(`http://xrlab.cepegra.be:1337/api/appusers?filters[pseudo][$eqi]=${userInput.pseudo}`);
+            console.log(checkUser)
 
             // ------------- T E M P O R A R Y   A P I -------------
-            const tableUserFull = {
-                "data": [
-                    {
-                      "id": 1,
-                      "attributes": {
-                        "pseudo": "User1",
-                        "disabled": false,
-                        "createdAt": "2022-10-05T07:52:22.461Z",
-                        "updatedAt": "2022-10-05T07:57:01.507Z",
-                        "publishedAt": "2022-10-05T07:56:05.243Z"
-                      }
-                    }
-                  ],
-                  "meta": {
-                    "pagination": {
-                      "page": 1,
-                      "pageSize": 25,
-                      "pageCount": 1,
-                      "total": 1
-                    }
-                  }
-            }
+            // const tableUserFull = {
+            //     "data": [
+            //         {
+            //           "id": 1,
+            //           "attributes": {
+            //             "pseudo": "User1",
+            //             "disabled": false,
+            //             "createdAt": "2022-10-05T07:52:22.461Z",
+            //             "updatedAt": "2022-10-05T07:57:01.507Z",
+            //             "publishedAt": "2022-10-05T07:56:05.243Z"
+            //           }
+            //         }
+            //       ],
+            //       "meta": {
+            //         "pagination": {
+            //           "page": 1,
+            //           "pageSize": 25,
+            //           "pageCount": 1,
+            //           "total": 1
+            //         }
+            //       }
+            // }
 
-            const tableUserEmpty = {
-                "data": [],
-	            "meta": {
-		            "pagination": {
-			            "page": 1,
-			            "pageSize": 25,
-			            "pageCount": 0,
-			            "total": 0
-		            }
-	            }
-            }
+            // const tableUserEmpty = {
+            //     "data": [],
+	        //     "meta": {
+		    //         "pagination": {
+			//             "page": 1,
+			//             "pageSize": 25,
+			//             "pageCount": 0,
+			//             "total": 0
+		    //         }
+	        //     }
+            // }
 
-            if(tableUserEmpty.meta.pagination.total === 0) {
+            if(checkUser.data.meta.pagination.total === 0) {
                 alert("pseudo unique")
                 setMsg({...msg, pseudo: "Pseudo obligatoire"})
                 document.querySelector(".errPseudo").classList.add('opacity-0')
@@ -216,7 +216,8 @@ const StartScreen: React.FC<props> = ({handleAddUser}) => {
         // - - - au click - - -
         const handleClick = (ev:React.FormEvent) => {
             ev.preventDefault();
-            window.location.href = 'SecondConnexionScreen'
+            //window.history.pushState(location, '', 'SecondConnexionScreen')
+            //window.location.href = 'SecondConnexionScreen'
         }
 
 

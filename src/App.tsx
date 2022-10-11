@@ -32,10 +32,10 @@ const App: React.FC = () => {
         <a-sky color="#222" src="/assets/sky2.png"></a-sky>
       </a-scene> */}
       {/* <StartScreen handleAddUser={handleAddUser} /> */}
-      <ConnexionScreen />
+      {/* <ConnexionScreen /> */}
       {/* <LastScreenQR/> */}
       {/* <LastScreenViewer/> */}
-      {/* <LoadingScreen/> */}
+      <LoadingScreen/>
 
     </div>
   );

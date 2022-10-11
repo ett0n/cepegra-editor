@@ -1,16 +1,16 @@
-/* ---- IMPORT ----*/
+/* --------------- IMPORT ---------------*/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ---- VARIABLES ----*/
+/* --------------- VARIABLES ---------------*/
 $primary-color: #f49e42;
 $scale: 1;
 $squareSize: 3rem;
 $cornerSize: calc($squareSize / $scale);
 $cornerPosition: 1rem;
 
-/* ---- QR SCAN ----*/
+/* --------------- QR SCAN ---------------*/
 .qrScan {
   display: flex;
   justify-content: center;
@@ -28,28 +28,29 @@ $cornerPosition: 1rem;
 }
 
 
-/* ---- LOADER ----*/
+/* --------------- L O A D E R ---------------*/
+/*  - - - - -   Animation   - - - - -  */
 @keyframes dyinglight {
-    15%{
-        transform: scale(1.5);
-    }
-    50%{
-        transform: rotate(-89deg);
-    }
-    100%{
-        transform: rotate(-90deg);
-    }
+  15%{
+    transform: scale(1.5);
+  }
+  50%{
+    transform: rotate(-89deg);
+  }
+  100%{
+    transform: rotate(-90deg);
+  }
 };
 
-.dl {
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    display: inline-block;
-}
-
-.dl__container {
+/*  - - - - -   loader   - - - - -  */
+.loader {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-block;
+  /* - - loader container - - */
+  &__container {
     position: absolute;
     left: 0;
     top: 0;
@@ -58,45 +59,48 @@ $cornerPosition: 1rem;
     transform-origin: 50% 50% 0;
     animation: dyinglight 1s ease infinite;
     backface-visibility: hidden;
-}
-
-.dl__corner--top:before,
-.dl__corner--top:after,
-.dl__corner--bottom:before,
-.dl__corner--bottom:after {
-    position: absolute;
-    width: $cornerSize;
-    height: $cornerSize;
-    color: $primary-color;
-    content: '';
-}
-
-.dl__corner--top{
-    &:before {
+  }
+  /* - - loader corner - - */
+  &__corner {
+    &--top {
+      &:before {
         border-left: .5rem solid;
         border-top: .5rem solid;
         top: -$cornerPosition;
         left: -$cornerPosition;
-    }
-    &:after {
+      }
+      &:after {
         border-right: .5rem solid;
         border-top: .5rem solid;
         top: -$cornerPosition;
         right: -$cornerPosition;
+      }
     }
-}
-
-.dl__corner--bottom {
-    &:before {
+    &--bottom {
+      &:before {
         border-left: .5rem solid;
         border-bottom: .5rem solid;
         bottom: -$cornerPosition;
         left: -$cornerPosition;
-    }
-    &:after {
+      }
+      &:after {
         border-right: .5rem solid;
         border-bottom: .5rem solid;
         bottom: -$cornerPosition;
         right: -$cornerPosition;
+      }
     }
+  }
 }
+
+.loader__corner--top:before,
+.loader__corner--top:after,
+.loader__corner--bottom:before,
+.loader__corner--bottom:after {
+  position: absolute;
+  width: $cornerSize;
+  height: $cornerSize;
+  color: $primary-color;
+  content: '';
+}
+

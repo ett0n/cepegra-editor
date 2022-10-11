@@ -56,9 +56,12 @@ function Taupiqueur() {
 }
 
 export default function App() {
+
+  const [getObj, setObj] = useState<String[]>([])
+
   return (
     <>
-     <Menu/>
+     <Menu setObj={setObj}/>
     <div id="canvas-container">
      
       <Canvas id="connard" camera={{ fov:90, position: [0, 4, 60] }}>

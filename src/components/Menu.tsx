@@ -1,21 +1,21 @@
-import * as THREE from "three";
-import { useState, useRef, useEffect } from "react";
-import { useDrag } from "@use-gesture/react";
 import { useGLTF } from "@react-three/drei";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useState, useRef, useEffect } from "react";
 
-export default function menu({ setObj }) {
-  useEffect(() => {
-    const connasse = document.getElementById("connard");
-    connasse?.addEventListener("dragenter", () => {
-      console.log("pupute");
-    }),
-      [];
-  });
+const hat = "/assets/images/lumberjack.glb";
+export default function menu({ setSelectedObj }: { setSelectedObj: any }) {
+  const gltf = useGLTF(hat);
 
-  const handleClick = (event) => {
-    console.log(event.target.dataset.name);
-    setObj(event.target.dataset.name);
+  // useEffect(() => {
+  //   const connasse = document.getElementById("connard");
+  //   connasse?.addEventListener("dragenter", () => {
+  //     console.log("pupute");
+  //   }),
+  //     [];
+  // });
+
+  const handleclick = (event: any) => {
+    setSelectedObj(event.target.dataset.name);
+    console.log(event.target.dataset.name)
   };
 
   return (
@@ -23,28 +23,41 @@ export default function menu({ setObj }) {
       <div className="menu">
         <ul className="menu-list">
           <li
-            onClick={(event) => handleClick(event)}
-            data-name="chapeau-1"
+            onClick={handleclick}
+            data-name="lumberjack"
             className="menu-item"
             draggable
           ></li>
           <li
-            onClick={(event) => handleClick(event)}
-            data-name="bottes-3"
+            onClick={handleclick}
+            data-name="bonnet"
             className="menu-item"
             draggable
           ></li>
           <li
-            onClick={(event) => handleClick(event)}
-            data-name="gants-5"
+            onClick={handleclick}
+            data-name="manteau"
             className="menu-item"
             draggable
           ></li>
-          <li className="menu-item" draggable></li>
-          <li className="menu-item" draggable></li>
-          <li className="menu-item" draggable></li>
-          <li className="menu-item" draggable></li>
-          <li className="menu-item" draggable></li>
+          <li
+            onClick={handleclick}
+            data-name="gants"
+            className="menu-item"
+            draggable
+          ></li>
+          <li
+            onClick={handleclick}
+            data-name="pantalon"
+            className="menu-item"
+            draggable
+          ></li>
+          <li
+            onClick={handleclick}
+            data-name="chaussettes"
+            className="menu-item"
+            draggable
+          ></li>
         </ul>
       </div>
       <button>back</button>

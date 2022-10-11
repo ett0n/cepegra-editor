@@ -57,15 +57,18 @@ function Taupiqueur() {
 
 export default function App() {
 
-  const [getObj, setObj] = useState<String[]>([])
+const [selectedObj, setSelectedObj] = useState<string[]>([])
 
   return (
     <>
-     <Menu setObj={setObj}/>
+    
     <div id="canvas-container">
-     
+    
+      <Menu setSelectedObj={setSelectedObj}/>
       <Canvas id="connard" camera={{ fov:90, position: [0, 4, 60] }}>
-      
+      {/* <Html> */}
+      {/* menu importé du Menu.tsx */}
+      {/* </Html> */}
       {/* <FlyControls position={[0, 20, 1]} /> */}
         <ambientLight position={[0, 5, 6]} intensity={2}/>
         <Taupiqueur></Taupiqueur>

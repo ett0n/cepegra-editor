@@ -1,4 +1,5 @@
 const ScanOverlay = () => {
+  /* ------------- R E N D U ------------- */
   return (
     <svg viewBox="0 0 100 100" className="scanOverlay">
       <path

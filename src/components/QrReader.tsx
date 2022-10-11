@@ -1,12 +1,13 @@
+/* ------------- I M P O R T ------------- */
 import React, { useState } from "react";
 import { QrReader } from "react-qr-reader";
 import ScanOverlay from "./ScanOverlay";
 
 const QrScan = () => {
-  const [data, setData] = useState<string>("No result");
-  const [delayScan, setDelayScan] = useState<number>(500);
+  const [getData, setData] = useState<string>("No result");
+  const [getDelayScan, setDelayScan] = useState<number>(500);
 
-  const handleScan = (result:any, error:any) => {
+  const HandleScan = (result:any, error:any) => {
     if (!!result) {
       console.log(result);
       setData(result?.text);
@@ -22,20 +23,21 @@ const QrScan = () => {
   // - - - Stop camera - - - 
   navigator.mediaDevices.getUserMedia({video: true, audio: false})
   .then(mediaStream => {
-    const stream = mediaStream;
-    const tracks = stream.getTracks();
+    const Stream = mediaStream;
+    const Tracks = Stream.getTracks();
 
-    tracks[0].stop;
+    Tracks[0].stop;
   })
 
   console.log(navigator)
 
   return (
+  /* ------------- R E N D U ------------- */
     <div>
       <QrReader
         constraints={{ facingMode: "environnement" }}
-        onResult={handleScan}
-        scanDelay={delayScan}
+        onResult={HandleScan}
+        scanDelay={getDelayScan}
         ViewFinder={ScanOverlay}
         className="qrScan"
         containerStyle={{ width: 200 }}

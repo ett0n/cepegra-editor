@@ -10,21 +10,21 @@ import LoadingScreen from "./components/LoadingScreen";
 
 
 const App: React.FC = () => {
-  // ------------- S T A T E ------------- 
-  const [user, setUser] = useState<UserSignIn>({
+  /* ------------- S T A T E ------------- */
+  const [getuser, setUser] = useState<UserSignIn>({
     pseudo: "",
     mail: "",
     password: ""
 })
 
-  // ------------- R E A C T I O N ------------- 
+  /* ------------- R E A C T I O N ------------- */ 
   //form
-  const handleAddUser = (newUser: UserSignIn) => {
+  const HandleAddUser = (newUser: UserSignIn) => {
     setUser(newUser);
   };
 
-  console.log("App user from props: ", user)
-  // ------------- R E N D U ------------- 
+  console.log("App user from props: ", getuser)
+  /* ------------- R E N D U ------------- */
   return (
     <div className="App">
       {/* <a-scene>

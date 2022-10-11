@@ -1,6 +1,8 @@
+/* ------------- I M P O R T ------------- */
 import { QRCodeCanvas } from "qrcode.react";
 
 const QrGen = () => {
+/* ------------- R E N D U ------------- */
   return (
     <QRCodeCanvas
       value={"https://7push.csb.app/"}

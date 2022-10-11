@@ -29,7 +29,7 @@ export const Hero = () => {
   });
 
   //component using gltf source from state
-  function Accessory({ src, clone }: { src: string | null; clone?: boolean }) {
+  const Accessory = ({ src, clone }: { src: string | null; clone?: boolean }) => {
     if (src === null) return <div></div>;
     const gltf = useGLTF(src, true);
     if (clone) {
@@ -50,7 +50,7 @@ export const Hero = () => {
   let characters: Character[] = [];
 
   // CALL API
-  async function fetchCharacterApi(idUser: number) {
+  const FetchCharacterApi = async (idUser: number) => {
     await axios
       .get(`http://xrlab.cepegra.be:1337/api/appusers/${idUser}?populate[characters][populate][accessories][populate]=*`)
       //if API down
@@ -85,13 +85,11 @@ export const Hero = () => {
         });
       });
   }
-  useEffect(() => {
-    fetchCharacterApi(1);
-  }, []);
 
+  // Fetch de personnage de l'api
   useEffect(() => {
-    console.log("prout");
-  }, [getAccessories]);
+    FetchCharacterApi(1);
+  }, []);
 
   const sX = 0.3;
 

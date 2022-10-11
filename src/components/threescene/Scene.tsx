@@ -6,7 +6,7 @@ import { Hero } from "./Hero";
 import { TextureLoader } from "three";
 import * as THREE from "three";
 
-export function Scene(props: any) {
+export const Scene = (props: any) => {
   //ground map
   const solMap = useLoader(TextureLoader, "/assets/ground/grass.jpg");
   solMap.wrapS = solMap.wrapT = THREE.RepeatWrapping;

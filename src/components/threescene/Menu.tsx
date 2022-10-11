@@ -1,7 +1,4 @@
-import { useGLTF } from "@react-three/drei";
-import { useState, useRef, useEffect } from "react";
-
-export default function menu({ setSelectedObj }: { setSelectedObj: any }) {
+const Menu = ({ setSelectedObj }: { setSelectedObj: any }) => {
 
   // useEffect(() => {
   //   const connasse = document.getElementById("connard");
@@ -11,7 +8,8 @@ export default function menu({ setSelectedObj }: { setSelectedObj: any }) {
   //     [];
   // });
 
-  const handleclick = (event: any) => {
+  // Lors du clique sur un item du menu
+  const HandleClick = (event: any) => {
     setSelectedObj(event.target.dataset.name);
     console.log(event.target.dataset.name)
   };
@@ -21,37 +19,37 @@ export default function menu({ setSelectedObj }: { setSelectedObj: any }) {
       <div className="menu">
         <ul className="menu-list">
           <li
-            onClick={handleclick}
+            onClick={HandleClick}
             data-name="lumberjack"
             className="menu-item"
             draggable
           ></li>
           <li
-            onClick={handleclick}
+            onClick={HandleClick}
             data-name="bonnet"
             className="menu-item"
             draggable
           ></li>
           <li
-            onClick={handleclick}
+            onClick={HandleClick}
             data-name="manteau"
             className="menu-item"
             draggable
           ></li>
           <li
-            onClick={handleclick}
+            onClick={HandleClick}
             data-name="gants"
             className="menu-item"
             draggable
           ></li>
           <li
-            onClick={handleclick}
+            onClick={HandleClick}
             data-name="pantalon"
             className="menu-item"
             draggable
           ></li>
           <li
-            onClick={handleclick}
+            onClick={HandleClick}
             data-name="chaussettes"
             className="menu-item"
             draggable
@@ -62,3 +60,5 @@ export default function menu({ setSelectedObj }: { setSelectedObj: any }) {
     </>
   );
 }
+
+export default Menu

@@ -12,11 +12,6 @@ interface Msg {
     confirm?: string;
 }
 
-interface ApiUser {
-    id: number;
-    pseudo: string
-}
-
 interface props {
     handleAddUser: (newUser: UserSignIn) => void;
 }
@@ -36,7 +31,7 @@ const StartScreen: React.FC<props> = ({handleAddUser}) => {
         password: ""
         }
     );
-    const [apiUser, setApiUser] = useState<ApiUser[]>([]);
+    const [apiUser, setApiUser] = useState<boolean>();
     const [confirmPass, setConfirmPass] = useState<string>();
     const [msg, setMsg] = useState<Msg>({
             pseudo: "Pseudo obligatoire",
@@ -60,7 +55,7 @@ const StartScreen: React.FC<props> = ({handleAddUser}) => {
 
         const getUserValue = async () => {
             const checkUser = await Axios.get(`http://xrlab.cepegra.be:1337/api/appusers?filters[pseudo][$eqi]=${userInput.pseudo}`);
-            console.log(checkUser)
+            //console.log(checkUser)
 
             // ------------- T E M P O R A R Y   A P I -------------
             // const tableUserFull = {
@@ -99,18 +94,12 @@ const StartScreen: React.FC<props> = ({handleAddUser}) => {
             // }
 
             if(checkUser.data.meta.pagination.total === 0) {
-                alert("pseudo unique")
+                //alert("pseudo unique")
                 setMsg({...msg, pseudo: "Pseudo obligatoire"})
-                document.querySelector(".errPseudo").classList.add('opacity-0')
-                document.querySelector('.inputPseudo').classList.remove('input-error')
-                document.querySelector('.inputPseudo').classList.add('input-success')
-                
+                setApiUser(true)           
             } else {
-                alert("pseudo utilisé")
-                document.querySelector('.inputPseudo').classList.remove('input-success')
-                document.querySelector(".errPseudo").classList.remove('opacity-0')
-                document.querySelector('.inputPseudo').classList.add('input-error')
                 setMsg({...msg, pseudo: "Pseudo déjà utilisé"})
+                setApiUser(false)
                 setUserInput({ pseudo: "", mail: "", password: "" });
             }
         };
@@ -232,11 +221,14 @@ const StartScreen: React.FC<props> = ({handleAddUser}) => {
                 <div className="grid">
                     <label htmlFor="">Pseudo*</label>
                     <input value={userInput.pseudo}  type="text" placeholder="Pseudo" className={
-                        `${(userInput.pseudoBlur && userInput.pseudo==="")?"input-error":""}
-                        ${(userInput.pseudoBlur && userInput.pseudo!=="")?"input-success":""}
+                        `${(userInput.pseudoBlur && userInput.pseudo==="" || apiUser === false)?"input-error":""}
+                        ${(userInput.pseudoBlur && userInput.pseudo!=="" && apiUser)?"input-success":""}
                         inputPseudo input input-bordered w-full max-w-xs`
                         } required onBlur={handlePseudoBlur} onChange={handlePseudoChange} />
-                    <p className="errPseudo opacity-0 text-xs mt-1 text-red-400">{msg.pseudo}</p>
+                    <p className={
+                        `${(userInput.pseudoBlur && userInput.pseudo==="" || apiUser === false)?"":"opacity-0"}
+                        errPseudo text-xs mt-1 text-red-400`
+                        }>{msg.pseudo}</p>
                 </div>
                 <div className="grid">
                     <label htmlFor="">Mail</label>

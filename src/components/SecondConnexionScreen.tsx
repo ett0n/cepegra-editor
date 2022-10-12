@@ -1,10 +1,24 @@
+// ------------- I M P O R T ------------- 
+/* --- import dependencies --- */
+import {useState, useEffect} from "react";
+import { Link } from "react-router-dom";
+import QrReader from "./QrReader";
+import Axios from "axios";
+
+/* --- import component --- */
+import StartScreen from "./StartScreen";
 import FooterComponent from "./FooterComponent";
 import LogoComponent from "./FooterComponent";
-import QrReader from "./QrReader";
-import {useState, useEffect} from "react";
-import Axios from "axios";
+
+/* --- import type --- */
 import type { UserSignIn } from "../types/UserSignin";
 
+interface ApiUser {
+  id?: number,
+  exist?: boolean
+}
+
+/* -------------------- C O M P O S A N T -------------------- */
 const SecondConnexionScreen = () => {
   /* ---------- S T A T E ---------- */
   const [getUserInput, setUserInput] = useState<UserSignIn>(
@@ -13,63 +27,27 @@ const SecondConnexionScreen = () => {
     password: ""
     }
   )
-  const [getApiUserId, setApiUserId] = useState<number>();
+  const [getApiUser, setApiUser] = useState<ApiUser>();
 
   /* ---------- R E A C T I O N ---------- */
+  /* ---------- fetch ---------- */
   const GetUserValue = async () => {
-    const checkUser = await Axios.get(`http://xrlab.cepegra.be:1337/api/appusers?filters[pseudo][$eqi]=${getUserInput.pseudo}`);
+    const checkUser = await Axios.get(`https://api.xrlab.cepegra.be/api/appusers?filters[pseudo][$eqi]=${getUserInput.pseudo}`);
     //console.log(checkUser)
-
-    /* ------------- T E M P O R A R Y   A P I ------------- */
-    // const tableUserFull = {
-    //     "data": [
-    //         {
-    //           "id": 1,
-    //           "attributes": {
-    //             "pseudo": "User1",
-    //             "disabled": false,
-    //             "createdAt": "2022-10-05T07:52:22.461Z",
-    //             "updatedAt": "2022-10-05T07:57:01.507Z",
-    //             "publishedAt": "2022-10-05T07:56:05.243Z"
-    //           }
-    //         }
-    //       ],
-    //       "meta": {
-    //         "pagination": {
-    //           "page": 1,
-    //           "pageSize": 25,
-    //           "pageCount": 1,
-    //           "total": 1
-    //         }
-    //       }
-    // }
-
-    // const tableUserEmpty = {
-    //     "data": [],
-  //     "meta": {
-//         "pagination": {
-//             "page": 1,
-//             "pageSize": 25,
-//             "pageCount": 0,
-//             "total": 0
-//         }
-  //     }
-    // }
-
-    console.log(checkUser)
     if (checkUser.data.meta.pagination.total !== 0) {
       alert("pseudo correct")
-      setApiUserId(checkUser.data.data[0].id)
+      setApiUser({...getApiUser, id: checkUser.data.data[0].id, exist: true})
       
     } else {
       alert("ce pseudo n'existe pas")
+      setApiUser({...getApiUser, exist: false})
     }
 };
   /* - - -  au submit - - - */
   const HandleSubmit = (ev:React.FormEvent) => {
     
     ev.preventDefault();
-    console.log(getUserInput.pseudo)
+    //console.log(getUserInput.pseudo)
     if(getUserInput.pseudo !== "" && getUserInput.password !== "") {
       console.log("champs remplis")
       GetUserValue()
@@ -91,10 +69,13 @@ const SecondConnexionScreen = () => {
     const target = ev.target as HTMLInputElement;
     setUserInput({ ...getUserInput, password: target.value });
   };
+
+  //A ajouter dans class name de input pseudo si résolu: ${(getUserInput.pseudo === "" || getApiUser?.exist === false) ? "input-error" : "input-success"}
+
   /* ---------- R E N D E R ---------- */
   return (
     <>
-      <div className="m-10 flex flex-col justify-center items-center">
+      <div className="m-6 flex flex-col justify-center items-center">
         <h1 className="m-3 text-center justify-center text-4xl font-bold">Nom du creator</h1>
         <div className=" grid grid-cols-1 m-6 gap-6 justify-center shadow-lg p-12 rounded-lg">
           {/* --------- QR Scan --------- */}
@@ -106,17 +87,19 @@ const SecondConnexionScreen = () => {
           <form className="grid grid-cols-2 justify-center col-span-2 m-6 gap-6" onSubmit={HandleSubmit}>
             <div className="grid">
               <label htmlFor="">Pseudo</label>
-              <input  type="text" placeholder="Pseudo" className="input input-bordered w-full max-w-xs " required onChange={HandlePseudoChange}/>
+              <input  type="text" placeholder="Pseudo" className={` input input-bordered w-full max-w-xs `} required onChange={HandlePseudoChange}/>
+              <p className={`${(getApiUser?.exist === false) ? "" : "opacity-0"} errPseudo text-xs mt-1 text-red-400`}>Ce pseudo n'existe pas</p>
             </div>
             <div className="grid">
               <label htmlFor="">Mot de passe</label>
-              <input  type="text" placeholder="Mot de passe" className="input input-bordered w-full max-w-xs "  onChange={HandlePasswordChange}/>
+              <input  type="password" placeholder="Mot de passe" className="input input-bordered w-full max-w-xs "  onChange={HandlePasswordChange}/>
+              <p className="opacity-0 errPass text-xs mt-1 text-red-400">Mot de passe incorrect</p>
             </div>
             {/* --------- Button --------- */}
             <button className="btn col-span-2 mx-40">Créer nouveau perso</button>
           </form>
           {/* --------- Pas encore inscrit ? --------- */}
-          <p className="col-span-2">Pas encore inscrit ? <a className="underline underline-offset-auto" href="#">C'est par ici !</a></p>
+          <p className="col-span-2">Pas encore inscrit ? <Link className="underline underline-offset-auto" to="/StartScreen">C'est par ici !</Link></p>
         </div>
       </div>
       {/* --------- Footer --------- */}

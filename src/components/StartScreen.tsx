@@ -1,7 +1,9 @@
 // ------------- I M P O R T ------------- 
-import {useState, useEffect} from "react";
+import {useState, useEffect, Dispatch, SetStateAction} from "react";
 import Axios from "axios";
+import { Link } from "react-router-dom";
 import type { UserSignIn } from "../types/UserSignin";
+import ConnexionScreen from "./SecondConnexionScreen";
 import FooterComponent from "./FooterComponent";
 import QrGenerator from "./QrGenerator";
 
@@ -13,17 +15,9 @@ interface Msg {
   confirm?: string;
 }
 
-interface props {
-  HandleAddUser: (getNewUser: UserSignIn) => void;
-}
 
-const StartScreen: React.FC<props> = ({HandleAddUser}) => {
+const StartScreen = ({ setUser }:  {setUser: Dispatch<SetStateAction<UserSignIn>>}) => {
   /* ------------- S T A T E ------------- */
-  const [getNewUser, setNewUser] = useState<UserSignIn>({
-    pseudo: "",
-    mail: "",
-    password: ""
-  })
   const [getUserInput, setUserInput] = useState<UserSignIn>(
     {
       pseudo: "",
@@ -33,7 +27,7 @@ const StartScreen: React.FC<props> = ({HandleAddUser}) => {
     }
   );
   const [getApiUser, setApiUser] = useState<boolean>();
-  const [getConfirmPass, setConfirmPass] = useState<string>();
+  const [getConfirmPass, setConfirmPass] = useState<string>("");
   const [getMsg, setMsg] = useState<Msg>({
     pseudo: "Pseudo obligatoire",
     mail: "Mail incorrect",
@@ -52,42 +46,9 @@ const StartScreen: React.FC<props> = ({HandleAddUser}) => {
   //     setApiUser(TableUsers);
   // };
   const GetUserValue = async () => {
-    const checkUser = await Axios.get(`http://xrlab.cepegra.be:1337/api/appusers?filters[pseudo][$eqi]=${getUserInput.pseudo}`);
+    const checkUser = await Axios.get(`https://api.xrlab.cepegra.be/api/appusers?filters[pseudo][$eqi]=${getUserInput.pseudo}`);
     //console.log(checkUser)
-    /* ------------- T E M P O R A R Y   A P I ------------- */
-    // const tableUserFull = {
-    //     "data": [
-    //         {
-    //           "id": 1,
-    //           "attributes": {
-    //             "pseudo": "User1",
-    //             "disabled": false,
-    //             "createdAt": "2022-10-05T07:52:22.461Z",
-    //             "updatedAt": "2022-10-05T07:57:01.507Z",
-    //             "publishedAt": "2022-10-05T07:56:05.243Z"
-    //           }
-    //         }
-    //       ],
-    //       "meta": {
-    //         "pagination": {
-    //           "page": 1,
-    //           "pageSize": 25,
-    //           "pageCount": 1,
-    //           "total": 1
-    //         }
-    //       }
-    // }
-    // const tableUserEmpty = {
-    //     "data": [],
-  //     "meta": {
-  //         "pagination": {
-  //             "page": 1,
-  //             "pageSize": 25,
-  //             "pageCount": 0,
-  //             "total": 0
-	    //         }
-        //     }
-          // }
+    
       if(checkUser.data.meta.pagination.total === 0) {
         //alert("pseudo unique")
         setMsg({...getMsg, pseudo: "Pseudo obligatoire"})
@@ -103,18 +64,17 @@ const StartScreen: React.FC<props> = ({HandleAddUser}) => {
     ev.preventDefault();
     if(getConfirmPass === getUserInput.password && getUserInput.password!=="") {
       alert("password identique")
-      setNewUser(
+      //Actualiser le state user de APP
+      setUser(
         {
           pseudo: getUserInput.pseudo,
           mail: getUserInput.mail,
           password: getUserInput.password
         }
       );
-      document.querySelector('.inputConfirm').classList.add('input-success')
+      document.querySelector('.inputConfirm')!.classList.add('input-success')
       setUserInput({ pseudo: "", mail: "", password: "" });
       setConfirmPass("")
-      //Passer les données du user dans APP
-      HandleAddUser(getNewUser)
       // -> Quand POST dispo, poster user dans API
       //Fetch id du user qu'on vient de post
       //Générer le qr code + imprimer
@@ -123,8 +83,8 @@ const StartScreen: React.FC<props> = ({HandleAddUser}) => {
       
     } else {
       alert("password wrong")
-      document.querySelector(".errConfirm").classList.remove('opacity-0')
-      document.querySelector('.inputConfirm').classList.add('input-error')
+      document.querySelector(".errConfirm")!.classList.remove('opacity-0')
+      document.querySelector('.inputConfirm')!.classList.add('input-error')
       setConfirmPass("")
     }
   };
@@ -160,26 +120,26 @@ const StartScreen: React.FC<props> = ({HandleAddUser}) => {
     const pattern = /^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/
     let result = pattern.test(getUserInput.mail!)
     if (result){
-      document.querySelector(".errMail").classList.add('opacity-0')
-      document.querySelector('.inputMail').classList.remove('input-error')
-      document.querySelector('.inputMail').classList.add('input-success')
+      document.querySelector(".errMail")!.classList.add('opacity-0')
+      document.querySelector('.inputMail')!.classList.remove('input-error')
+      document.querySelector('.inputMail')!.classList.add('input-success')
     } else {
-      document.querySelector(".errMail").classList.remove('opacity-0')
-      document.querySelector('.inputMail').classList.remove('input-success')
-      document.querySelector('.inputMail').classList.add('input-error')
+      document.querySelector(".errMail")!.classList.remove('opacity-0')
+      document.querySelector('.inputMail')!.classList.remove('input-success')
+      document.querySelector('.inputMail')!.classList.add('input-error')
     }
   }
   const HandlePassBlur = () => {
     const pattern = /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/
     //const result: boolean = pattern.test(userInput.password!)
     if (pattern.test(getUserInput.password!)) {
-      document.querySelector('.inputPass').classList.remove('input-error')
-      document.querySelector('.inputPass').classList.add('input-success')
-      document.querySelector(".errPass").classList.remove('text-red-400')
+      document.querySelector('.inputPass')!.classList.remove('input-error')
+      document.querySelector('.inputPass')!.classList.add('input-success')
+      document.querySelector(".errPass")!.classList.remove('text-red-400')
     } else {
       alert("pass incorrect")
-      document.querySelector(".errPass").classList.add('text-red-400')
-      document.querySelector('.inputPass').classList.add('input-error')
+      document.querySelector(".errPass")!.classList.add('text-red-400')
+      document.querySelector('.inputPass')!.classList.add('input-error')
     }
   }
   /* - - - au click - - - */
@@ -226,7 +186,7 @@ const StartScreen: React.FC<props> = ({HandleAddUser}) => {
             {/* ------- Button ------- */}
             <button className="btn col-span-2  mx-40">Créer nouveau perso</button>
             {/* ------- Déjà inscrit ? ------- */}
-            <p>Déjà inscrit ? <a className="underline" href="#" onClick={HandleClick}>C'est par ici ! </a></p>
+            <p>Déjà inscrit ? <Link className="underline" to="/ConnexionScreen" >C'est par ici ! </Link></p>
         </form>
       </div>
       {/* --------- Footer --------- */}

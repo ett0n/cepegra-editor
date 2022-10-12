@@ -1,12 +1,13 @@
 import { Canvas, useLoader } from "@react-three/fiber";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useGLTF, OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { Hero } from "./Hero";
 import { TextureLoader } from "three";
 import * as THREE from "three";
+import type { AccessoriesStr } from "../../types/Character";
 
-export const Scene = (props: any) => {
+export const Scene = ({ getAccessories, setAccessories }: { getAccessories: AccessoriesStr; setAccessories: Dispatch<SetStateAction<AccessoriesStr>> }) => {
   //ground map
   const solMap = useLoader(TextureLoader, "/assets/ground/grass.jpg");
   solMap.wrapS = solMap.wrapT = THREE.RepeatWrapping;
@@ -32,7 +33,7 @@ export const Scene = (props: any) => {
         <circleGeometry args={[20, 50]} />
         <meshStandardMaterial attach="material" color="darkgreen" map={solMap} roughness={5} />
       </mesh>
-      <Hero></Hero>
+      <Hero getAccessories={getAccessories} setAccessories={setAccessories} />
     </>
   );
-}
+};

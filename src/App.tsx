@@ -18,6 +18,8 @@ const App = () => {
     password: ""
 })
 
+  const [getUserId, setUserId] = useState<number>()
+
   /* ------------- R E A C T I O N ------------- */ 
   //form
   // const HandleAddUser = (newUser: UserSignIn) => {
@@ -32,7 +34,7 @@ const App = () => {
         <Routes>
           <Route path="/">
             <Route path="StartScreen" element={<StartScreen setUser={setUser} />}></Route>
-            <Route path="ConnexionScreen" element={<ConnexionScreen />}></Route>
+            <Route path="ConnexionScreen" element={<ConnexionScreen setUserId={setUserId} />}></Route>
           </Route>
         </Routes>
       </BrowserRouter>

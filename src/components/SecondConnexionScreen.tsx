@@ -1,8 +1,8 @@
 // ------------- I M P O R T ------------- 
 /* --- import dependencies --- */
-import {useState, useEffect} from "react";
+import {useState, useEffect, Dispatch, SetStateAction} from "react";
 import { Link } from "react-router-dom";
-import QrReader from "./QrReader";
+//import QrReader from "./QrReader";
 import Axios from "axios";
 
 /* --- import component --- */
@@ -13,13 +13,8 @@ import LogoComponent from "./FooterComponent";
 /* --- import type --- */
 import type { UserSignIn } from "../types/UserSignin";
 
-interface ApiUser {
-  id?: number,
-  exist?: boolean
-}
-
 /* -------------------- C O M P O S A N T -------------------- */
-const SecondConnexionScreen = () => {
+const SecondConnexionScreen = ({ setUserId }:  {setUserId: Dispatch<SetStateAction<any>>}) => {
   /* ---------- S T A T E ---------- */
   const [getUserInput, setUserInput] = useState<UserSignIn>(
     {
@@ -27,20 +22,22 @@ const SecondConnexionScreen = () => {
     password: ""
     }
   )
-  const [getApiUser, setApiUser] = useState<ApiUser>();
+  const [getUserExist, setUserExist] = useState<boolean>();
 
   /* ---------- R E A C T I O N ---------- */
   /* ---------- fetch ---------- */
   const GetUserValue = async () => {
-    const checkUser = await Axios.get(`https://api.xrlab.cepegra.be/api/appusers?filters[pseudo][$eqi]=${getUserInput.pseudo}`);
+    const checkUser = await Axios.get(`https://api.xrlab.cepegra.be/api/appusers?filters[pseudo][$eqi]=${getUserInput.pseudo}&filters[password][$eqi]=${getUserInput.password}`);
     //console.log(checkUser)
     if (checkUser.data.meta.pagination.total !== 0) {
-      alert("pseudo correct")
-      setApiUser({...getApiUser, id: checkUser.data.data[0].id, exist: true})
+      alert("login correct")
+      setUserId(checkUser.data.data[0].id)
+      setUserExist(true)
       
     } else {
-      alert("ce pseudo n'existe pas")
-      setApiUser({...getApiUser, exist: false})
+      alert("ce login n'existe pas")
+      setUserExist(false)
+      console.log(getUserInput)
     }
 };
   /* - - -  au submit - - - */
@@ -51,10 +48,10 @@ const SecondConnexionScreen = () => {
     if(getUserInput.pseudo !== "" && getUserInput.password !== "") {
       console.log("champs remplis")
       GetUserValue()
-
     } else {
       console.log("champs non remplis")
     }
+    setUserInput({ pseudo: "", password: "" });
   }
   
   /* - - -  input change - - - */
@@ -70,7 +67,7 @@ const SecondConnexionScreen = () => {
     setUserInput({ ...getUserInput, password: target.value });
   };
 
-  //A ajouter dans class name de input pseudo si résolu: ${(getUserInput.pseudo === "" || getApiUser?.exist === false) ? "input-error" : "input-success"}
+   //A ajouter dans class name de input pseudo si résolu: ${(getUserInput.pseudo === "" || getApiUser?.exist === false) ? "input-error" : "input-success"}
 
   /* ---------- R E N D E R ---------- */
   return (
@@ -88,12 +85,12 @@ const SecondConnexionScreen = () => {
             <div className="grid">
               <label htmlFor="">Pseudo</label>
               <input  type="text" placeholder="Pseudo" className={` input input-bordered w-full max-w-xs `} required onChange={HandlePseudoChange}/>
-              <p className={`${(getApiUser?.exist === false) ? "" : "opacity-0"} errPseudo text-xs mt-1 text-red-400`}>Ce pseudo n'existe pas</p>
+              <p className={`${(getUserExist === false) ? "" : "opacity-0"} errPseudo text-xs mt-1 text-red-400`}>Ce pseudo n'existe pas</p>
             </div>
             <div className="grid">
               <label htmlFor="">Mot de passe</label>
               <input  type="password" placeholder="Mot de passe" className="input input-bordered w-full max-w-xs "  onChange={HandlePasswordChange}/>
-              <p className="opacity-0 errPass text-xs mt-1 text-red-400">Mot de passe incorrect</p>
+              <p className={`${(getUserExist === false) ? "" : "opacity-0"} errPass text-xs mt-1 text-red-400`}>Mot de passe incorrect</p>
             </div>
             {/* --------- Button --------- */}
             <button className="btn col-span-2 mx-40">Créer nouveau perso</button>

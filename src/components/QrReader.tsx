@@ -6,7 +6,6 @@ import ScanOverlay from "./ScanOverlay";
 const QrScan = () => {
   const [getData, setData] = useState<string>("No result");
   const [getDelayScan, setDelayScan] = useState<number>(2000);
-
   const HandleScan = (result:any, error:any) => {
     if (result) {
       console.log(result);
@@ -90,7 +89,7 @@ export default QrScan;
 //                     <QrReader
 //                         onResult={(result, error) => {
 //                             if (result) {
-//                             setAddress(result.text);
+//                             setAddress(result?.text);
 //                             }
 //                             if (error) {
 //                             console.log(error);

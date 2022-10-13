@@ -1,4 +1,4 @@
-// ------------- I M P O R T ------------- 
+/* ------------- I M P O R T S ------------- */
 /* --- import dependencies --- */
 import {useState, useEffect, Dispatch, SetStateAction} from "react";
 import { Link } from "react-router-dom";

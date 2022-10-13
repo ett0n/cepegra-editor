@@ -1,6 +1,6 @@
 /* ------------- I M P O R T ------------- */
 
-import FooterComponent from "./FooterComponent"
+import FooterComponent from "../components/FooterComponent"
 
 /* ------------- I N I T I A L I S A T I O N ------------- */
 

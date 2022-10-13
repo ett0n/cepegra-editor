@@ -1,28 +1,34 @@
 // ------------- I M P O R T ------------- 
+/* --- import dependencies --- */
 import {useState, useEffect, Dispatch, SetStateAction} from "react";
 import Axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
+//import { Redirect } from "react-router";
+
+/* --- import type --- */
 import type { UserSignIn } from "../types/UserSignin";
+
+/* --- import component --- */
 import ConnexionScreen from "./SecondConnexionScreen";
-import FooterComponent from "./FooterComponent";
-import QrGenerator from "./QrGenerator";
+import FooterComponent from "../components/FooterComponent";
+import LoadingScreen from "./LoadingScreen";
 
 /* ------------- I N T E R F A C E ------------- */
 interface Msg {
   pseudo?: string;
-  mail?: string;
+  email?: string;
   password?: string;
   confirm?: string;
 }
 
 
-const StartScreen = ({ setUser }:  {setUser: Dispatch<SetStateAction<UserSignIn>>}) => {
+const StartScreen = ({ setUserId }:  {setUserId: Dispatch<SetStateAction<any>>}) => {
   /* ------------- S T A T E ------------- */
   const [getUserInput, setUserInput] = useState<UserSignIn>(
     {
       pseudo: "",
       pseudoBlur: false,
-      mail: "",
+      email: "",
       password: ""
     }
   );
@@ -30,21 +36,15 @@ const StartScreen = ({ setUser }:  {setUser: Dispatch<SetStateAction<UserSignIn>
   const [getConfirmPass, setConfirmPass] = useState<string>("");
   const [getMsg, setMsg] = useState<Msg>({
     pseudo: "Pseudo obligatoire",
-    mail: "Mail incorrect",
+    email: "Mail incorrect",
     password: "6 caractères dont une majuscule et un chiffre",
     confirm: "Confirmation incorrecte",
   })
-  // useEffect(() => {
-  //     GetDatas();
-  // }, []);
+
  
   /* ------------- R E A C T I O N ------------- */
-  // - - - fetch - - -
-  // const GetDatas = async () => {
-  //     const apiDatas = await Axios.get('http://xrlab.cepegra.be:1337/api/appusers?populate=*');
-  //     const TableUsers = apiDatas.data.data.map( (u: { id: any; attributes: { pseudo: any; }; })  => {return {id: u.id, pseudo : u.attributes.pseudo}})
-  //     setApiUser(TableUsers);
-  // };
+  /* - - - - - - AXIOS - - - - - - */
+  /* - - - Get - - - */
   const GetUserValue = async () => {
     const checkUser = await Axios.get(`https://api.xrlab.cepegra.be/api/appusers?filters[pseudo][$eqi]=${getUserInput.pseudo}`);
     //console.log(checkUser)
@@ -56,69 +56,81 @@ const StartScreen = ({ setUser }:  {setUser: Dispatch<SetStateAction<UserSignIn>
       } else {
         setMsg({...getMsg, pseudo: "Pseudo déjà utilisé"})
         setApiUser(false)
-        setUserInput({ pseudo: "", mail: "", password: "" });
+        setUserInput({ pseudo: "", email: "", password: "" });
       }
   };
-  /* - - -  au submit - - - */
+
+  /* - - - Post - - - */
+  const PostNewUser = async () => {
+    try {
+      const postResult = await Axios.post("https://api.xrlab.cepegra.be/api/appusers", {data: {pseudo: getUserInput.pseudo, email: getUserInput.email, password: getUserInput.password}})
+      console.log("Post réussi: ", postResult)
+      //Actualiser le state getUserId de APP
+      setUserId(postResult.data.data.id)
+    }
+    catch(error) {
+      console.error("Erreur de Post: ", error)
+    }
+  }
+
+  /* - - - - - -  SUBMIT - - - - - - */
   const HandleSubmit = (ev:React.FormEvent) => {
     ev.preventDefault();
-    if(getConfirmPass === getUserInput.password && getUserInput.password!=="") {
+    if(getUserInput.password !== "" && getUserInput.pseudo !== "" && getConfirmPass === getUserInput.password) {
       alert("password identique")
-      //Actualiser le state user de APP
-      setUser(
-        {
-          pseudo: getUserInput.pseudo,
-          mail: getUserInput.mail,
-          password: getUserInput.password
-        }
-      );
+      /* SI OK: post new user */
+      PostNewUser()
+      //changer les css
       document.querySelector('.inputConfirm')!.classList.add('input-success')
-      setUserInput({ pseudo: "", mail: "", password: "" });
+      setUserInput({ pseudo: "", email: "", password: "" });
       setConfirmPass("")
-      // -> Quand POST dispo, poster user dans API
-      //Fetch id du user qu'on vient de post
-      //Générer le qr code + imprimer
-      
+
       //switch vers scene en ayant récupéré l'id du nouvel utilisateur
-      
+      return redirect("/LoadingScreen")
     } else {
       alert("password wrong")
+      //changer les css
       document.querySelector(".errConfirm")!.classList.remove('opacity-0')
       document.querySelector('.inputConfirm')!.classList.add('input-error')
       setConfirmPass("")
     }
   };
-  /* - - -  input change - - - */
+
+  /* - - - - - - INPUT CHANGE - - - - - - */
+  /* - - -  input change Pseudo - - - */
   const HandlePseudoChange = (ev:React.FormEvent) => {
-    //console.log(ev);
     const target = ev.target as HTMLInputElement; //typescript fix: value does not
     setUserInput({ ...getUserInput, pseudo: target.value });
   };
+  /* - - -  input change Mail - - - */
   const HandleMailChange = (ev:React.FormEvent) => {
-    //setRoleInput(ev.target.value);
     const target = ev.target as HTMLInputElement;
-    setUserInput({ ...getUserInput, mail: target.value });
+    setUserInput({ ...getUserInput, email: target.value });
   };
+  /* - - -  input change Password - - - */
   const HandlePasswordChange = (ev:React.FormEvent) => {
-    //setSideSelect(ev.target.value);
     const target = ev.target as HTMLInputElement;
     setUserInput({ ...getUserInput, password: target.value });
   };
+  /* - - -  input change Confirm password - - - */
   const HandleConfirmPassChange = (ev:React.FormEvent) => {
-    //setSideSelect(ev.target.value);
     const target = ev.target as HTMLInputElement;
     setConfirmPass(target.value);
   };
-  /* - - - on blur - - - */
+
+  /* - - - - - - ON BLUR - - - - - - */
+  /* - - - on blur Pseudo - - - */
   const HandlePseudoBlur = () => {
     setUserInput({...getUserInput, pseudoBlur:true})
-    //Faire un test pour savoir si unique
+    //Faire un test vers api pour savoir si pseudo est unique:
     GetUserValue()
   }
+   /* - - - on blur Mail - - - */
   const HandleMailBlur = () => {
     //test regex
     const pattern = /^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/
-    let result = pattern.test(getUserInput.mail!)
+    let result = pattern.test(getUserInput.email!)
+    //changer les css en fonction du résultat du test regex
     if (result){
       document.querySelector(".errMail")!.classList.add('opacity-0')
       document.querySelector('.inputMail')!.classList.remove('input-error')
@@ -129,9 +141,11 @@ const StartScreen = ({ setUser }:  {setUser: Dispatch<SetStateAction<UserSignIn>
       document.querySelector('.inputMail')!.classList.add('input-error')
     }
   }
+  /* - - - on blur Password - - - */
   const HandlePassBlur = () => {
+    //test regex
     const pattern = /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/
-    //const result: boolean = pattern.test(userInput.password!)
+    //changer les css en fonction du résultat du test regex
     if (pattern.test(getUserInput.password!)) {
       document.querySelector('.inputPass')!.classList.remove('input-error')
       document.querySelector('.inputPass')!.classList.add('input-success')
@@ -142,14 +156,9 @@ const StartScreen = ({ setUser }:  {setUser: Dispatch<SetStateAction<UserSignIn>
       document.querySelector('.inputPass')!.classList.add('input-error')
     }
   }
-  /* - - - au click - - - */
-  const HandleClick = (ev:React.FormEvent) => {
-    ev.preventDefault();
-    //window.history.pushState(location, '', 'SecondConnexionScreen')
-    //window.location.href = 'SecondConnexionScreen'
-  }
+
+
   /* ------------- R E N D U ------------- */
-  //console.log(user)
   return (
     <>
       <div className="m-6 flex flex-col justify-center items-center">
@@ -158,6 +167,7 @@ const StartScreen = ({ setUser }:  {setUser: Dispatch<SetStateAction<UserSignIn>
         <form className=" grid grid-cols-2 justify-center m-6 gap-12 shadow-lg p-20 rounded-lg" onSubmit={HandleSubmit}>
           <div className="grid">
             <label htmlFor="">Pseudo*</label>
+            {/* changer les css sans utiliser de querySelector */}
             <input value={getUserInput.pseudo}  type="text" placeholder="Pseudo" className={
               `${(getUserInput.pseudoBlur && getUserInput.pseudo==="" || getApiUser === false)?"input-error":""}
               ${(getUserInput.pseudoBlur && getUserInput.pseudo!=="" && getApiUser)?"input-success":""}
@@ -170,8 +180,8 @@ const StartScreen = ({ setUser }:  {setUser: Dispatch<SetStateAction<UserSignIn>
           </div>
             <div className="grid">
               <label htmlFor="">Mail</label>
-              <input value={getUserInput.mail}  type="email" placeholder="Mail" className="inputMail input input-bordered w-full max-w-xs " onBlur={HandleMailBlur} onChange={HandleMailChange} />
-              <p className="errMail opacity-0 text-xs mt-1 text-red-400">{getMsg.mail}</p>
+              <input value={getUserInput.email}  type="email" placeholder="Mail" className="inputMail input input-bordered w-full max-w-xs " onBlur={HandleMailBlur} onChange={HandleMailChange} />
+              <p className="errMail opacity-0 text-xs mt-1 text-red-400">{getMsg.email}</p>
             </div>
             <div className="grid">
               <label htmlFor="">Mot de passe*</label>

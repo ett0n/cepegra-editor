@@ -1,7 +1,7 @@
 interface UserSignIn {
     pseudo: string;
     pseudoBlur?: boolean;
-    mail?: string;
+    email?: string;
     password: string
 }
 export type {UserSignIn}

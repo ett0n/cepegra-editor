@@ -1,15 +1,20 @@
 /* ------------- I M P O R T ------------- */
-import React, { useState, useRef, useEffect } from "react";
+/* --- import dependencies --- */
+import React, { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
 import { QrReader } from "react-qr-reader";
+
+/* --- import component --- */
 import ScanOverlay from "./ScanOverlay";
 
-const QrScan = () => {
-  const [getData, setData] = useState<string>("No result");
+
+//Encore cracra -> A refactorer
+
+const QrScan = ({ setQrResult }:  {setQrResult: Dispatch<SetStateAction<any>>}) => {
   const [getDelayScan, setDelayScan] = useState<number>(2000);
   const HandleScan = (result:any, error:any) => {
     if (result) {
       console.log(result);
-      setData(result?.text);
+      setQrResult(result?.text);
       //setDelayScan(false);
     } 
     else if (error) {
@@ -18,22 +23,22 @@ const QrScan = () => {
     }
   };
 
-  // - - - Stop camera - - - 
-  console.dir('camera', MediaDevices)
-  // const stream = navigator.mediaDevices.getUserMedia();
-  // const StopCamera = (stream) => {
-  //   stream.getTracks().forEach(track => track.stop())
-  // }
-  navigator.mediaDevices.getUserMedia({video: true, audio: false})
-  .then(mediaStream => {
-    const stream = mediaStream;
-    const tracks = stream.getTracks();
-    document.addEventListener('click', (e)  => {
-      console.log(e)
-      tracks.forEach(track => track.stop)
-    })
-    //Tracks[0].stop;
-  })
+  // // - - - Stop camera - - - 
+  // console.dir('camera', MediaDevices)
+  // // const stream = navigator.mediaDevices.getUserMedia();
+  // // const StopCamera = (stream) => {
+  // //   stream.getTracks().forEach(track => track.stop())
+  // // }
+  // navigator.mediaDevices.getUserMedia({video: true, audio: false})
+  // .then(mediaStream => {
+  //   const stream = mediaStream;
+  //   const tracks = stream.getTracks();
+  //   document.addEventListener('click', (e)  => {
+  //     console.log(e)
+  //     tracks.forEach(track => track.stop)
+  //   })
+  //   //Tracks[0].stop;
+  // })
 
   console.log(navigator)
 

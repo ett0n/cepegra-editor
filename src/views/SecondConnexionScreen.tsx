@@ -1,14 +1,14 @@
 /* ------------- I M P O R T S ------------- */
 /* --- import dependencies --- */
 import {useState, useEffect, Dispatch, SetStateAction} from "react";
-import { Link } from "react-router-dom";
-import QrReader from "./QrReader";
+import { Link, redirect } from "react-router-dom";
+import QrReader from "../components/QrReader";
 import Axios from "axios";
 
 /* --- import component --- */
 import StartScreen from "./StartScreen";
-import FooterComponent from "./FooterComponent";
-import LogoComponent from "./FooterComponent";
+import FooterComponent from "../components/FooterComponent";
+import LogoComponent from "../components/FooterComponent";
 
 /* --- import type --- */
 import type { UserSignIn } from "../types/UserSignin";
@@ -23,51 +23,61 @@ const SecondConnexionScreen = ({ setUserId }:  {setUserId: Dispatch<SetStateActi
     }
   )
   const [getUserExist, setUserExist] = useState<boolean>();
+  const [getQrResult, setQrResult] = useState<string>();
+  const [getQrExist, setQrExist] = useState<boolean>();
 
-  /* ---------- R E A C T I O N ---------- */
-  /* ---------- fetch ---------- */
+  useEffect(() => {
+    if(getQrResult !== "") {
+      setQrExist(false)
+    }
+  }, [])
+
+  /* ------------- R E A C T I O N ------------- */
+  /* - - - - - - AXIOS - - - - - - */
+  /* - - - Get - - - */
   const GetUserValue = async () => {
-    const checkUser = await Axios.get(`https://api.xrlab.cepegra.be/api/appusers?filters[pseudo][$eqi]=${getUserInput.pseudo}&filters[password][$eqi]=${getUserInput.password}`);
+    const checkUser = await Axios.get(`https://api.xrlab.cepegra.be/api/appusers?filters[pseudo][$eqi]=${getUserInput.pseudo}&filters[password][$eq]=${getUserInput.password}`);
     //console.log(checkUser)
     if (checkUser.data.meta.pagination.total !== 0) {
-      alert("login correct")
+      console.log("login correct")
       setUserId(checkUser.data.data[0].id)
       setUserExist(true)
-      
+      //rediriger vers l'editor (ne fonctionne pas encore)
+      return redirect("/LoadingScreen")
     } else {
-      alert("ce login n'existe pas")
+      console.log("ce login n'existe pas")
       setUserExist(false)
       console.log(getUserInput)
     }
-};
-  /* - - -  au submit - - - */
+  };
+  /* - - - - - -  SUBMIT - - - - - - */
   const HandleSubmit = (ev:React.FormEvent) => {
-    
     ev.preventDefault();
-    //console.log(getUserInput.pseudo)
     if(getUserInput.pseudo !== "" && getUserInput.password !== "") {
       console.log("champs remplis")
+      //comparer les input avec le résultat de l'api:
       GetUserValue()
     } else {
       console.log("champs non remplis")
     }
+    //mettre les champs à vide (ne fonctionne pas encore)
     setUserInput({ pseudo: "", password: "" });
   }
   
-  /* - - -  input change - - - */
+  /* - - - - - - INPUT CHANGE - - - - - - */
+  /* - - -  input change Pseudo - - - */
   const HandlePseudoChange = (ev:React.FormEvent) => {
-    //console.log(ev);
     const target = ev.target as HTMLInputElement; //typescrifix: value does not
     setUserInput({ ...getUserInput, pseudo: target.value });
   };
-
+  /* - - -  input change Mail - - - */
   const HandlePasswordChange = (ev:React.FormEvent) => {
-    //setSideSelect(ev.target.value);
     const target = ev.target as HTMLInputElement;
     setUserInput({ ...getUserInput, password: target.value });
   };
 
-   //A ajouter dans class name de input pseudo si résolu: ${(getUserInput.pseudo === "" || getApiUser?.exist === false) ? "input-error" : "input-success"}
+  //non résolu:
+  //A ajouter dans class name de input pseudo si résolu: ${(getUserInput.pseudo === "" || getApiUser?.exist === false) ? "input-error" : "input-success"}
 
   /* ---------- R E N D E R ---------- */
   return (
@@ -78,13 +88,17 @@ const SecondConnexionScreen = ({ setUserId }:  {setUserId: Dispatch<SetStateActi
           {/* --------- QR Scan --------- */}
           <div className="col-span-2 grid justify-center">
             <h2>Scannes ton code QR</h2>
-            <QrReader />
+            {/* Quand le scan donne un résultat, on arrête le composant */}
+            {
+              getQrExist === true && <QrReader setQrResult={setQrResult} />
+            }
           </div>
           {/* --------- Formulaire --------- */}
           <form className="grid grid-cols-2 justify-center col-span-2 m-6 gap-6" onSubmit={HandleSubmit}>
             <div className="grid">
               <label htmlFor="">Pseudo</label>
               <input  type="text" placeholder="Pseudo" className={` input input-bordered w-full max-w-xs `} required onChange={HandlePseudoChange}/>
+              {/* changer les css sans utiliser de querySelector */}
               <p className={`${(getUserExist === false) ? "" : "opacity-0"} errPseudo text-xs mt-1 text-red-400`}>Ce pseudo n'existe pas</p>
             </div>
             <div className="grid">

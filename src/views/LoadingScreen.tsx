@@ -1,5 +1,5 @@
 /* ------------- I M P O R T ------------- */
-import FooterComponent from "./FooterComponent"
+import FooterComponent from "../components/FooterComponent"
 
 
 const LoadingScreen = () => {

@@ -1,11 +1,14 @@
 import { useGLTF } from "@react-three/drei";
 import axios from "axios";
-import { Dispatch, useEffect, useMemo, useState, Suspense, AnchorHTMLAttributes, SetStateAction } from "react";
+import { Dispatch, useEffect, Suspense, SetStateAction } from "react";
 import type { Anchors } from "../../types/Anchors";
-import type { Accessories, Character, AccessoriesStr } from "../../types/Character";
+import type { Character, AccessoriesStr } from "../../types/Character";
 
 export const Hero = ({ getAccessories, setAccessories }: { getAccessories: AccessoriesStr; setAccessories: Dispatch<SetStateAction<AccessoriesStr>> }) => {
-  //defining
+  /* --------- variables --------- */
+  const character = useGLTF("/assets/character/character.glb");
+  const sX = 0.3;
+  //position des points d'ancrages X,Y,Z
   const anc: Anchors = {
     hats: [0, 3.43, -0.03],
     heads: [0, 3.1, 0],
@@ -15,34 +18,10 @@ export const Hero = ({ getAccessories, setAccessories }: { getAccessories: Acces
     foot_l: [-0.34, 0.3, -0.02],
     foot_r: [0.34, 0.3, -0.02],
   };
-
-  //defining character GLB
-  const character = useGLTF("/assets/character/character.glb");
-
-  //state managing active accessories
-
-  //component using gltf source from state
-  const Accessory = ({ src, clone }: { src: string | null; clone?: boolean }) => {
-    if (src === null) return null;
-    const gltf = useGLTF(src, true);
-    if (clone) {
-      return (
-        <Suspense fallback={null}>
-          <primitive object={gltf.scene.clone()} />
-        </Suspense>
-      );
-    } else {
-      return (
-        <Suspense fallback={null}>
-          <primitive object={gltf.scene} />
-        </Suspense>
-      );
-    }
-  };
-  //pushing every chracter from API result in an array[] of Characters
+  //tableau de character qui reprend les personnages de l'API
   let characters: Character[] = [];
 
-  // CALL API
+  //fetch currenct character from API
   const FetchCharacterApi = async (idUser: number) => {
     await axios
       .get(`${import.meta.env.VITE_API}appusers/${idUser}?populate[characters][populate][accessories][populate]=*`)
@@ -79,13 +58,29 @@ export const Hero = ({ getAccessories, setAccessories }: { getAccessories: Acces
       });
   };
 
-  // Fetch de personnage de l'api
+  /* ------ useEffect and state refresh ------ */
   useEffect(() => {
     FetchCharacterApi(1);
   }, []);
 
-  const sX = 0.3;
-
+  /* ------ component pour les accessoires dans le render ------ */
+  const Accessory = ({ src, clone }: { src: string | null; clone?: boolean }) => {
+    if (src === null) return null;
+    const gltf = useGLTF(src, true);
+    if (clone) {
+      return (
+        <Suspense fallback={null}>
+          <primitive object={gltf.scene.clone()} />
+        </Suspense>
+      );
+    } else {
+      return (
+        <Suspense fallback={null}>
+          <primitive object={gltf.scene} />
+        </Suspense>
+      );
+    }
+  };
   return (
     <>
       <primitive object={character.scene}>

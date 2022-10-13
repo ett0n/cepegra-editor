@@ -23,8 +23,8 @@ const SecondConnexionScreen = ({ setUserId }:  {setUserId: Dispatch<SetStateActi
     }
   )
   const [getUserExist, setUserExist] = useState<boolean>();
-  const [getQrResult, setQrResult] = useState<string>();
-  const [getQrExist, setQrExist] = useState<boolean>();
+  const [getQrResult, setQrResult] = useState<string>("");
+  const [getQrExist, setQrExist] = useState<boolean>(true);
 
   useEffect(() => {
     if(getQrResult !== "") {
@@ -78,7 +78,7 @@ const SecondConnexionScreen = ({ setUserId }:  {setUserId: Dispatch<SetStateActi
 
   //non résolu:
   //A ajouter dans class name de input pseudo si résolu: ${(getUserInput.pseudo === "" || getApiUser?.exist === false) ? "input-error" : "input-success"}
-
+console.log(getQrResult)
   /* ---------- R E N D E R ---------- */
   return (
     <>
@@ -88,9 +88,9 @@ const SecondConnexionScreen = ({ setUserId }:  {setUserId: Dispatch<SetStateActi
           {/* --------- QR Scan --------- */}
           <div className="col-span-2 grid justify-center">
             <h2>Scannes ton code QR</h2>
-            {/* Quand le scan donne un résultat, on arrête le composant */}
+            {/* Quand le scan donne un résultat, on arrête le composant (NE FONCTIONNE PAS !) */}
             {
-              getQrExist === true && <QrReader setQrResult={setQrResult} />
+              getQrResult === "" && <QrReader setQrResult={setQrResult} />
             }
           </div>
           {/* --------- Formulaire --------- */}

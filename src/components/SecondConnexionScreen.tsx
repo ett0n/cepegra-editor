@@ -2,7 +2,7 @@
 /* --- import dependencies --- */
 import {useState, useEffect, Dispatch, SetStateAction} from "react";
 import { Link } from "react-router-dom";
-//import QrReader from "./QrReader";
+import QrReader from "./QrReader";
 import Axios from "axios";
 
 /* --- import component --- */
@@ -78,7 +78,7 @@ const SecondConnexionScreen = ({ setUserId }:  {setUserId: Dispatch<SetStateActi
           {/* --------- QR Scan --------- */}
           <div className="col-span-2 grid justify-center">
             <h2>Scannes ton code QR</h2>
-            {/* <QrReader /> */}
+            <QrReader />
           </div>
           {/* --------- Formulaire --------- */}
           <form className="grid grid-cols-2 justify-center col-span-2 m-6 gap-6" onSubmit={HandleSubmit}>

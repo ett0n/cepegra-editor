@@ -56,7 +56,7 @@ export const Hero = ({ getAccessories, setAccessories }: { getAccessories: Acces
         characterResponse.forEach((element: Character) => {
           characters.push(element);
         });
-        let charNumber = 1;
+        let charNumber = 0;
         //character[x].accessory_name
         let accessories = {
           hatN: characters[charNumber].attributes.accessories.hat.name,
@@ -81,7 +81,7 @@ export const Hero = ({ getAccessories, setAccessories }: { getAccessories: Acces
 
   // Fetch de personnage de l'api
   useEffect(() => {
-    FetchCharacterApi(2);
+    FetchCharacterApi(1);
   }, []);
 
   const sX = 0.3;

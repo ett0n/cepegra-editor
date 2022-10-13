@@ -13,54 +13,87 @@ const Menu = ({ setSelectedObj, getAccessories, setAccessories }: { setSelectedO
 
   const fetchApi = async () => {
     try {
-      await axios.get(import.meta.env.VITE_API + "accessories?populate=deep"));
-      setListAccessories(getListAccessories.data.data[0].attributes.Category);
+      const result = await axios.get(import.meta.env.VITE_API + "accessories?populate=deep");
+      console.log("lesobjetsdanslpai");
+      setListAccessories(result.data.data[0].attributes.Category);
       console.log(getListAccessories);
     } catch (error) {
       console.log(error);
     }
   };
-  const HandleClick = (event: any) => {
-    setSelectedObj(event.target.dataset.name);
-    console.log(event.target.dataset.name, event.target.dataset.category);
-    leSetterComplexe(event.target.dataset.name, event.target.dataset.category);
-  };
-  const SubMenu = () => {
-    return null;
-  };
-  const leSetterComplexe = (name: string, category: string) => {
+
+  // const HandleClick = (event: any) => {
+  //   setSelectedObj(event.target.dataset.name);
+  //   console.log(event.target.dataset.name, event.target.dataset.category);
+  //   leSetterComplexe(event.target.dataset.name, event.target.dataset.category);
+  // };
+
+  const leSetterComplexe = (name: string | null, category: string) => {
     const x = { ...getAccessories };
     // console.log(x);
 
     switch (category) {
       case "hat":
-        x[category] = `/assets/accessories/hats/${name}/${name}.glb`;
+        name === null ? (x[category] = null) : (x[category] = `/assets/accessories/hats/${name}/${name}.glb`);
         break;
       case "head":
-        x[category] = `/assets/accessories/heads/${name}/${name}.glb`;
+        name === null ? (x[category] = null) : (x[category] = `/assets/accessories/heads/${name}/${name}.glb`);
         break;
       case "body":
-        x[category] = `/assets/accessories/bodies/${name}/${name}.glb`;
+        name === null ? (x[category] = null) : (x[category] = `/assets/accessories/bodies/${name}/${name}.glb`);
         break;
       case "hand_l":
-        x[category] = `/assets/accessories/hands/${name}/${name}.glb`;
+        name === null ? (x[category] = null) : (x[category] = `/assets/accessories/hands/${name}/${name}.glb`);
         break;
       case "hand_r":
-        x[category] = `/assets/accessories/hands/${name}/${name}.glb`;
+        name === null ? (x[category] = null) : (x[category] = `/assets/accessories/hands/${name}/${name}.glb`);
         break;
       case "feet":
-        x[category] = `/assets/accessories/feet/${name}/${name}.glb`;
+        name === null ? (x[category] = null) : (x[category] = `/assets/accessories/feet/${name}/${name}.glb`);
         break;
     }
 
     setAccessories(x);
   };
 
+  const OpenSubMenu = (id: number) => {
+    setSubMenu(getListAccessories[id - 1].Accessory);
+  };
+
+  const GoBack = () => {
+    setSubMenu([]);
+  };
+
+  const [getSubMenu, setSubMenu] = useState<{ id: number; uid_name: string }[]>([]);
+
+  const PrintMenu = () => {
+    console.log(getSubMenu);
+    if (getSubMenu.length === 0)
+      return getListAccessories.map(({ id, cat_name, accessories }: { id: number; cat_name: string; accessories: {} }) => (
+        <li key={id} onClick={() => OpenSubMenu(id)} data-key={id} data-name="sphere-1" data-category="hat" className="menu-item" draggable>
+          {cat_name}
+        </li>
+      ));
+    else
+      return (
+        <>
+          {getSubMenu.map(({ id, uid_name }: { id: number; uid_name: string }) => (
+            <li key={id} onClick={() => leSetterComplexe(uid_name, "hat")} data-key={id} data-name={uid_name} data-category="hat" className="menu-item" draggable>
+              {uid_name}
+            </li>
+          ))}
+          <li className="menu-item" onClick={() => leSetterComplexe(null, "hat")}>
+            Remove
+          </li>
+        </>
+      );
+  };
+
   return (
     <>
       <div className="menu">
         {/* <ul className="menu-list">
-          <li onClick={OpenMenu} data-name="sphere-1" data-category="hat" className="menu-item" draggable>
+          <li onClick={HandleClick} data-name="sphere-1" data-category="hat" className="menu-item" draggable>
             Chapo
           </li>
           <li onClick={HandleClick} data-name="sphere-1" data-category="head" className="menu-item" draggable></li>
@@ -70,14 +103,10 @@ const Menu = ({ setSelectedObj, getAccessories, setAccessories }: { setSelectedO
           <li onClick={HandleClick} data-name="sphere-1" data-category="feet" className="menu-item" draggable></li>
         </ul> */}
         <ul className="menu-list">
-          {getListAccessories.map(({ id, cat_name, Accessory }) => (
-            <li key={id} className="menu-item">
-              Coffee type {cat_name}
-            </li>
-          ))}
+          <PrintMenu />
         </ul>
       </div>
-      <button>back</button>
+      <button onClick={GoBack}>back</button>
     </>
   );
 };

@@ -1,15 +1,45 @@
+// ------------- I M P O R T ------------- 
+/* --- import dependencies --- */
 import { useState } from "react";
-import "aframe";
+import axios from "axios";
+import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 
-function App() {
+/* --- import type --- */
+import type { UserSignIn } from "./types/UserSignin";
+
+/* --- import component --- */
+import StartScreen from "./views/StartScreen";
+import ConnexionScreen from "./views/SecondConnexionScreen";
+import LastScreenQR from "./views/LastScreenQR";
+import LastScreenViewer from "./views/LastScreenViewer";
+import LoadingScreen from "./views/LoadingScreen";
+
+
+const App = () => {
+  /* ------------- S T A T E ------------- */
+  const [getUserId, setUserId] = useState<number>()
+
+  /* ------------- R E A C T I O N ------------- */ 
+  
+  console.log("User id: ", getUserId)
+  /* ------------- R E N D U ------------- */
   return (
     <div className="App">
-      {/* <a-scene>
-        <a-box src="https://i.imgur.com/mYmmbrp.jpg" position="0 2 -5" rotation="0 45 45" scale="2 2 2"></a-box>
-        <a-sky color="#222" src="/assets/sky2.png"></a-sky>
-      </a-scene> */}
-      <button className="btn btn-info">Info</button>
-      <button className="btn">Button</button>
+      {/* - - - Routage de l'application - - - */}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/">
+            <Route path="StartScreen" element={<StartScreen setUserId={setUserId} />}></Route>
+            <Route path="ConnexionScreen" element={<ConnexionScreen setUserId={setUserId} />}></Route>
+            <Route path="LoadingScreen" element={<LoadingScreen />}></Route>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+      {/* <ConnexionScreen /> */}
+      {/* <LastScreenQR/> */}
+      {/* <LastScreenViewer/> */}
+      {/* <LoadingScreen/> */}
+
     </div>
   );
 }

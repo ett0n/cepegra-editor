@@ -15,11 +15,60 @@ const Menu = ({ setSelectedObj, getAccessories, setAccessories }: { setSelectedO
     try {
       const result = await axios.get(import.meta.env.VITE_API + "accessories?populate=deep");
       console.log("lesobjetsdanslpai");
-      setListAccessories(result.data.data[0].attributes.Category);
+      const accessoriesResult = result.data.data[0].attributes.Category;
+      CustomListAccessories(accessoriesResult);
       console.log(getListAccessories);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const CustomListAccessories = (accessories: any[]) => {
+    const arrTemp: any = [];
+    console.log(accessories);
+
+    let handPassed = false;
+
+    accessories.forEach((element) => {
+      let objTemp = {};
+      let anchor: string = "";
+
+      switch (element.cat_name) {
+        case "hats":
+          anchor = "hat";
+          break;
+        case "heads":
+          anchor = "head";
+          break;
+        case "bodies":
+          anchor = "body";
+          break;
+        case "hands":
+          anchor = "hand";
+          break;
+        case "feet":
+          anchor = "feet";
+          break;
+        case "backgrounds":
+          anchor = "backgrounds";
+          break;
+      }
+
+      //faire un if pour tester les mains
+      if (element.cat_name === "hands") {
+        let leftHand = { id: element.id, cat_name: element.cat_name, anchor: anchor + "_l", accessories: element.Accessory };
+        arrTemp.push(leftHand);
+        let rightHand = { id: element.id + 1, cat_name: element.cat_name, anchor: anchor + "_r", accessories: element.Accessory };
+        arrTemp.push(rightHand);
+        handPassed = true;
+      } else {
+        if (!handPassed) objTemp = { id: element.id, cat_name: element.cat_name, anchor: anchor, accessories: element.Accessory };
+        else objTemp = { id: element.id + 1, cat_name: element.cat_name, anchor: anchor, accessories: element.Accessory };
+        arrTemp.push(objTemp);
+      }
+    });
+    console.log(arrTemp);
+    setListAccessories(arrTemp);
   };
 
   // const HandleClick = (event: any) => {
@@ -29,6 +78,7 @@ const Menu = ({ setSelectedObj, getAccessories, setAccessories }: { setSelectedO
   // };
 
   const leSetterComplexe = (name: string | null, category: string) => {
+    console.log("letest", category);
     const x = { ...getAccessories };
     // console.log(x);
 
@@ -56,8 +106,11 @@ const Menu = ({ setSelectedObj, getAccessories, setAccessories }: { setSelectedO
     setAccessories(x);
   };
 
-  const OpenSubMenu = (id: number) => {
-    setSubMenu(getListAccessories[id - 1].Accessory);
+  const [getActiveCat, setActiveCat] = useState<string>("");
+
+  const OpenSubMenu = (id: number, cat: string) => {
+    setActiveCat(cat);
+    setSubMenu(getListAccessories[id - 1].accessories);
   };
 
   const GoBack = () => {
@@ -69,20 +122,20 @@ const Menu = ({ setSelectedObj, getAccessories, setAccessories }: { setSelectedO
   const PrintMenu = () => {
     console.log(getSubMenu);
     if (getSubMenu.length === 0)
-      return getListAccessories.map(({ id, cat_name, accessories }: { id: number; cat_name: string; accessories: {} }) => (
-        <li key={id} onClick={() => OpenSubMenu(id)} data-key={id} data-name="sphere-1" data-category="hat" className="menu-item" draggable>
-          {cat_name}
+      return getListAccessories.map(({ id, anchor, accessories }: { id: number; anchor: string; accessories: {} }) => (
+        <li key={id} onClick={() => OpenSubMenu(id, anchor)} data-key={id} data-name="sphere-1" data-category={anchor} className="menu-item" draggable>
+          {anchor}
         </li>
       ));
     else
       return (
         <>
           {getSubMenu.map(({ id, uid_name }: { id: number; uid_name: string }) => (
-            <li key={id} onClick={() => leSetterComplexe(uid_name, "hat")} data-key={id} data-name={uid_name} data-category="hat" className="menu-item" draggable>
+            <li key={id} onClick={() => leSetterComplexe(uid_name, getActiveCat)} data-key={id} data-name={uid_name} data-category="hat" className="menu-item" draggable>
               {uid_name}
             </li>
           ))}
-          <li className="menu-item" onClick={() => leSetterComplexe(null, "hat")}>
+          <li className="menu-item" onClick={() => leSetterComplexe(null, getActiveCat)}>
             Remove
           </li>
         </>
@@ -92,16 +145,6 @@ const Menu = ({ setSelectedObj, getAccessories, setAccessories }: { setSelectedO
   return (
     <>
       <div className="menu">
-        {/* <ul className="menu-list">
-          <li onClick={HandleClick} data-name="sphere-1" data-category="hat" className="menu-item" draggable>
-            Chapo
-          </li>
-          <li onClick={HandleClick} data-name="sphere-1" data-category="head" className="menu-item" draggable></li>
-          <li onClick={HandleClick} data-name="sphere-1" data-category="body" className="menu-item" draggable></li>
-          <li onClick={HandleClick} data-name="sphere-1" data-category="hand_l" className="menu-item" draggable></li>
-          <li onClick={HandleClick} data-name="sphere-1" data-category="hand_r" className="menu-item" draggable></li>
-          <li onClick={HandleClick} data-name="sphere-1" data-category="feet" className="menu-item" draggable></li>
-        </ul> */}
         <ul className="menu-list">
           <PrintMenu />
         </ul>

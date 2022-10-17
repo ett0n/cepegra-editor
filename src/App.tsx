@@ -13,6 +13,8 @@ import ConnexionScreen from "./views/SecondConnexionScreen";
 import LastScreenQR from "./views/LastScreenQR";
 import LastScreenViewer from "./views/LastScreenViewer";
 import LoadingScreen from "./views/LoadingScreen";
+import { Editor } from "./views/Editor";
+
 
 
 const App = () => {
@@ -25,6 +27,10 @@ const App = () => {
   /* ------------- R E N D U ------------- */
   return (
     <div className="App">
+        <div id="canvas-container">
+      <Editor />
+          </div>
+
       {/* - - - Routage de l'application - - - */}
       <BrowserRouter>
         <Routes>
@@ -40,8 +46,8 @@ const App = () => {
       {/* <LastScreenViewer/> */}
       {/* <LoadingScreen/> */}
 
+
     </div>
   );
-}
-
+};
 export default App;

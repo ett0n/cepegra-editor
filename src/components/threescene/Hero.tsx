@@ -7,16 +7,16 @@ import type { Character, AccessoriesStr } from "../../types/Character";
 export const Hero = ({ getAccessories, setAccessories }: { getAccessories: AccessoriesStr; setAccessories: Dispatch<SetStateAction<AccessoriesStr>> }) => {
   /* --------- variables --------- */
   const character = useGLTF("/assets/character/character.glb");
-  const sX = 0.3;
+  const sX = 1;
   //position des points d'ancrages X,Y,Z
   const anc: Anchors = {
-    hats: [0, 3.43, -0.03],
-    heads: [0, 3.1, 0],
-    bodies: [0, 0.6, 0],
-    hand_l: [-1.2, 2, 0],
-    hand_r: [1.2, 2, 0],
-    foot_l: [-0.34, 0.3, -0.02],
-    foot_r: [0.34, 0.3, -0.02],
+    hats: [0, 0, 0],
+    heads: [0, 0, 0],
+    bodies: [0, 0, 0],
+    hand_l: [0, 0, 0],
+    hand_r: [0, 0, 0],
+    foot_l: [0, 0, 0],
+    foot_r: [0, 0, 0],
   };
   //tableau de character qui reprend les personnages de l'API
   let characters: Character[] = [];
@@ -93,10 +93,10 @@ export const Hero = ({ getAccessories, setAccessories }: { getAccessories: Acces
         <mesh position={anc.bodies} scale={1}>
           <Accessory src={getAccessories.body} />
         </mesh>
-        <mesh position={anc.hand_l} scale={1} rotation={[2, 0, 0]}>
+        <mesh position={anc.hand_l} scale={[sX, sX, sX]}>
           <Accessory src={getAccessories.hand_l} />
         </mesh>
-        <mesh position={anc.hand_r} scale={1} rotation={[2, 0, 0]}>
+        <mesh position={anc.hand_r} scale={[-sX, sX, sX]}>
           <Accessory src={getAccessories.hand_r} clone={true} />
         </mesh>
         <mesh position={anc.foot_l} scale={[sX, sX, sX]} rotation={[0, 0, 0]}>

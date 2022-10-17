@@ -11,12 +11,12 @@ const Editor = () => {
   const [getSelectedObj, setSelectedObj] = useState<String[]>([]);
 
   const [getAccessories, setAccessories] = useState<AccessoriesStr>({
-    hat: "/assets/accessories/hats/sphere-1/sphere-1.glb",
-    head: "/assets/accessories/heads/glasses-1/glasses-1.glb",
-    body: "/assets/accessories/bodies/rectangle-1/rectangle-1.glb",
-    hand_l: "/assets/accessories/hands/hammer-1/hammer-1.glb",
-    hand_r: "/assets/accessories/hands/hammer-1/hammer-1.glb",
-    feet: "/assets/accessories/feet/sneakers-1/sneakers-1.glb",
+    hat: null,
+    head: null,
+    body: null,
+    hand_l: null,
+    hand_r: null,
+    feet: null,
   });
 
   return (

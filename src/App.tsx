@@ -1,4 +1,4 @@
-// ------------- I M P O R T ------------- 
+// ------------- I M P O R T -------------
 /* --- import dependencies --- */
 import { useState } from "react";
 import axios from "axios";
@@ -15,22 +15,16 @@ import LastScreenViewer from "./views/LastScreenViewer";
 import LoadingScreen from "./views/LoadingScreen";
 import { Editor } from "./views/Editor";
 
-
-
 const App = () => {
   /* ------------- S T A T E ------------- */
-  const [getUserId, setUserId] = useState<number>()
+  const [getUserId, setUserId] = useState<number>();
 
-  /* ------------- R E A C T I O N ------------- */ 
-  
-  console.log("User id: ", getUserId)
+  /* ------------- R E A C T I O N ------------- */
+
+  console.log("User id: ", getUserId);
   /* ------------- R E N D U ------------- */
   return (
     <div className="App">
-        <div id="canvas-container">
-      <Editor />
-          </div>
-
       {/* - - - Routage de l'application - - - */}
       <BrowserRouter>
         <Routes>
@@ -38,6 +32,14 @@ const App = () => {
             <Route path="StartScreen" element={<StartScreen setUserId={setUserId} />}></Route>
             <Route path="ConnexionScreen" element={<ConnexionScreen setUserId={setUserId} />}></Route>
             <Route path="LoadingScreen" element={<LoadingScreen />}></Route>
+            <Route
+              path="Editor"
+              element={
+                <div id="canvas-container">
+                  <Editor />
+                </div>
+              }
+            ></Route>
           </Route>
         </Routes>
       </BrowserRouter>
@@ -45,8 +47,6 @@ const App = () => {
       {/* <LastScreenQR/> */}
       {/* <LastScreenViewer/> */}
       {/* <LoadingScreen/> */}
-
-
     </div>
   );
 };

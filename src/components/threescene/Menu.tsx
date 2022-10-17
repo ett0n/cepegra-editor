@@ -146,7 +146,13 @@ const Menu = ({ setSelectedObj, getAccessories, setAccessories }: { setSelectedO
           <PrintMenu />
         </ul>
       </div>
-      {getSubMenu.length > 0 ? <button onClick={GoBack}>back</button> : ""}
+      {getSubMenu.length > 0 ? (
+        <button className="btn btn-menu" onClick={GoBack}>
+          back
+        </button>
+      ) : (
+        ""
+      )}
     </>
   );
 };

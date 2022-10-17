@@ -10,6 +10,21 @@ $squareSize: 3rem;
 $cornerSize: calc($squareSize / $scale);
 $cornerPosition: 1rem;
 
+/* --------------- GLOBAL ---------------*/
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+
+body {
+  overflow: hidden;
+}
+
+canvas {
+  z-index: 0;
+  width: 100vw;
+}
+
 /* --------------- QR SCAN ---------------*/
 .qrScan {
   display: flex;
@@ -27,20 +42,19 @@ $cornerPosition: 1rem;
   height: 100%;
 }
 
-
 /* --------------- L O A D E R ---------------*/
 /*  - - - - -   Animation   - - - - -  */
 @keyframes dyinglight {
-  15%{
+  15% {
     transform: scale(1.5);
   }
-  50%{
+  50% {
     transform: rotate(-89deg);
   }
-  100%{
+  100% {
     transform: rotate(-90deg);
   }
-};
+}
 
 /*  - - - - -   loader   - - - - -  */
 .loader {
@@ -64,28 +78,28 @@ $cornerPosition: 1rem;
   &__corner {
     &--top {
       &:before {
-        border-left: .5rem solid;
-        border-top: .5rem solid;
+        border-left: 0.5rem solid;
+        border-top: 0.5rem solid;
         top: -$cornerPosition;
         left: -$cornerPosition;
       }
       &:after {
-        border-right: .5rem solid;
-        border-top: .5rem solid;
+        border-right: 0.5rem solid;
+        border-top: 0.5rem solid;
         top: -$cornerPosition;
         right: -$cornerPosition;
       }
     }
     &--bottom {
       &:before {
-        border-left: .5rem solid;
-        border-bottom: .5rem solid;
+        border-left: 0.5rem solid;
+        border-bottom: 0.5rem solid;
         bottom: -$cornerPosition;
         left: -$cornerPosition;
       }
       &:after {
-        border-right: .5rem solid;
-        border-bottom: .5rem solid;
+        border-right: 0.5rem solid;
+        border-bottom: 0.5rem solid;
         bottom: -$cornerPosition;
         right: -$cornerPosition;
       }
@@ -101,34 +115,18 @@ $cornerPosition: 1rem;
   width: $cornerSize;
   height: $cornerSize;
   color: $primary-color;
-  content: '';
+  content: "";
 }
 
-* {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    margin: 0%;
-    padding: 0%;
-    box-sizing: border-box;
-    height: 100vh; 
-    appearance: none;
-
-
+#canvas-container {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  margin: 0%;
+  padding: 0%;
+  box-sizing: border-box;
+  height: 100vh;
+  appearance: none;
 }
-*::-webkit-scrollbar {
-  display: none;
-  width: 0;
-}
-
-body {
-  overflow: hidden;
-}
-
-canvas {
-    z-index: 0;
-    width: 100vw; 
-} 
-
 
 .menu {
   z-index: 1;
@@ -136,14 +134,11 @@ canvas {
   border-radius: 0.5rem;
   margin: 1rem;
   margin-top: 5rem;
-  width: 7rem ;
+  width: 7rem;
   height: 80%;
   background-color: rgba(189, 189, 189, 0.7);
   overflow: scroll;
-  box-shadow: 0px 2px 15px rgba($color: #000000, $alpha: 0.5)
-  
-
-
+  box-shadow: 0px 2px 15px rgba($color: #000000, $alpha: 0.5);
 }
 
 .menu-item {
@@ -157,19 +152,7 @@ canvas {
   box-shadow: 0px 2px 15px rgba($color: #000000, $alpha: 0.4);
 }
 
-button {
+.btn-menu {
   z-index: 1;
   position: absolute;
-  margin: 2rem;
-  height: 2rem;
-  width: 5rem;
-  background-color: #313131;
-  border: none;
-  border-radius: 0.3rem;
-  color: #fff;
-}
-button:hover {
-  box-shadow: 0px 2px 15px rgba($color: #000000, $alpha: 0.3);
-  background-color: #616161;
-  border: 1px solid#212121;
 }

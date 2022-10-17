@@ -6,24 +6,22 @@ import { QrReader } from "react-qr-reader";
 /* --- import component --- */
 import ScanOverlay from "./ScanOverlay";
 
-
 //Encore cracra -> A refactorer
 
-const QrScan = ({ setQrResult }:  {setQrResult: Dispatch<SetStateAction<any>>}) => {
+const QrScan = ({ setQrResult }: { setQrResult: Dispatch<SetStateAction<any>> }) => {
   const [getDelayScan, setDelayScan] = useState<number>(2000);
-  const HandleScan = (result:any, error:any) => {
+  const HandleScan = (result: any, error: any) => {
     if (result) {
       console.log(result);
       setQrResult(result?.text);
       //setDelayScan(false);
-    } 
-    else if (error) {
+    } else if (error) {
       //console.log("Prout: ", error);
       return;
     }
   };
 
-  // // - - - Stop camera - - - 
+  // // - - - Stop camera - - -
   // console.dir('camera', MediaDevices)
   // // const stream = navigator.mediaDevices.getUserMedia();
   // // const StopCamera = (stream) => {
@@ -40,20 +38,12 @@ const QrScan = ({ setQrResult }:  {setQrResult: Dispatch<SetStateAction<any>>}) 
   //   //Tracks[0].stop;
   // })
 
-  console.log(navigator)
+  //console.log(navigator)
 
   return (
-  /* ------------- R E N D U ------------- */
+    /* ------------- R E N D U ------------- */
     <div>
-      <QrReader
-        constraints={{ facingMode: "environnement" }}
-        onResult={HandleScan}
-        scanDelay={getDelayScan}
-        ViewFinder={ScanOverlay}
-        className="qrScan"
-        containerStyle={{ width: 200 }}
-        videoStyle={{ height: 200 }}
-      />
+      <QrReader constraints={{ facingMode: "environnement" }} onResult={HandleScan} scanDelay={getDelayScan} ViewFinder={ScanOverlay} className="qrScan" containerStyle={{ width: 200 }} videoStyle={{ height: 200 }} />
     </div>
   );
 };
@@ -81,7 +71,6 @@ export default QrScan;
 //         });
 //         ref.current.stopCamera()
 //     };
-
 
 //     return (
 //         <div>

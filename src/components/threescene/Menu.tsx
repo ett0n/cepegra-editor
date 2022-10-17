@@ -5,6 +5,7 @@ import axios from "axios";
 const Menu = ({ setSelectedObj, getAccessories, setAccessories }: { setSelectedObj: any; getAccessories: AccessoriesStr; setAccessories: Dispatch<SetStateAction<AccessoriesStr>> }) => {
   /* --------- variables & states --------- */
   const [getListAccessories, setListAccessories] = useState<any>([{ id: 0, cat_name: "Loading...", Accessory: [] }]);
+  const [getListImg, setListImg] = useState<any>({});
   const [getActiveCat, setActiveCat] = useState<string>("");
   const [getSubMenu, setSubMenu] = useState<{ id: number; uid_name: string }[]>([]);
 
@@ -79,30 +80,35 @@ const Menu = ({ setSelectedObj, getAccessories, setAccessories }: { setSelectedO
 
   //permet d'envoyer au useState une version testée pour envoyer null si
   // la valeur est null ou string d'item si la valeur est item
-  const RefreshActiveAccessories = (name: string | null, category: string) => {
+  const RefreshActiveAccessories = (name: string | null, category: string, extension: string) => {
     const x = { ...getAccessories };
     switch (category) {
       case "hat":
-        name === null ? (x[category] = null) : (x[category] = `/assets/accessories/hats/${name}/${name}.glb`);
+        name === null ? (x[category] = null) : (x[category] = `/assets/accessories/hats/${name}/${name}.${extension}`);
+        if (extension === "png") return `/assets/accessories/hats/${name}/${name}.${extension}`;
         break;
       case "head":
-        name === null ? (x[category] = null) : (x[category] = `/assets/accessories/heads/${name}/${name}.glb`);
+        name === null ? (x[category] = null) : (x[category] = `/assets/accessories/heads/${name}/${name}.${extension}`);
+        if (extension === "png") return `/assets/accessories/heads/${name}/${name}.${extension}`;
         break;
       case "body":
-        name === null ? (x[category] = null) : (x[category] = `/assets/accessories/bodies/${name}/${name}.glb`);
+        name === null ? (x[category] = null) : (x[category] = `/assets/accessories/bodies/${name}/${name}.${extension}`);
+        if (extension === "png") return `/assets/accessories/bodies/${name}/${name}.${extension}`;
         break;
       case "hand_l":
-        name === null ? (x[category] = null) : (x[category] = `/assets/accessories/hands/${name}/${name}.glb`);
+        name === null ? (x[category] = null) : (x[category] = `/assets/accessories/hands/${name}/${name}.${extension}`);
+        if (extension === "png") return `/assets/accessories/hands/${name}/${name}.${extension}`;
         break;
       case "hand_r":
-        name === null ? (x[category] = null) : (x[category] = `/assets/accessories/hands/${name}/${name}.glb`);
+        name === null ? (x[category] = null) : (x[category] = `/assets/accessories/hands/${name}/${name}.${extension}`);
+        if (extension === "png") return `/assets/accessories/hands/${name}/${name}.${extension}`;
         break;
       case "feet":
-        name === null ? (x[category] = null) : (x[category] = `/assets/accessories/feet/${name}/${name}.glb`);
+        name === null ? (x[category] = null) : (x[category] = `/assets/accessories/feet/${name}/${name}.${extension}`);
+        if (extension === "png") return `/assets/accessories/feet/${name}/${name}.${extension}`;
         break;
     }
-
-    setAccessories(x);
+    if (extension !== "png") setAccessories(x);
   };
 
   //ouvre un submenu et set la categorie active du submenu sur celle de son menu parent
@@ -129,12 +135,12 @@ const Menu = ({ setSelectedObj, getAccessories, setAccessories }: { setSelectedO
       return (
         <>
           {getSubMenu.map(({ id, uid_name }: { id: number; uid_name: string }) => (
-            <li key={id} onClick={() => RefreshActiveAccessories(uid_name, getActiveCat)} className="menu-item" draggable>
-              {uid_name}
+            <li key={id} onClick={() => RefreshActiveAccessories(uid_name, getActiveCat, "glb")} className="menu-item" draggable>
+              <img className="menu-img" src={RefreshActiveAccessories(uid_name, getActiveCat, "png")} alt="Un accessoire" />
             </li>
           ))}
-          <li className="menu-item" onClick={() => RefreshActiveAccessories(null, getActiveCat)}>
-            Remove
+          <li className="menu-item" onClick={() => RefreshActiveAccessories(null, getActiveCat, "glb")}>
+            <i className="fa-solid fa-trash-can fa-3x"></i>
           </li>
         </>
       );
@@ -148,7 +154,7 @@ const Menu = ({ setSelectedObj, getAccessories, setAccessories }: { setSelectedO
       </div>
       {getSubMenu.length > 0 ? (
         <button className="btn btn-menu" onClick={GoBack}>
-          back
+          <i className="fa-solid fa-left-long fa-2x"></i>
         </button>
       ) : (
         ""

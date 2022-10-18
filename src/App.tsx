@@ -36,7 +36,7 @@ const App = () => {
               path="Editor"
               element={
                 <div id="canvas-container">
-                  <Editor />
+                  <Editor getUserId={getUserId} />
                 </div>
               }
             ></Route>

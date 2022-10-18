@@ -1,0 +1,38 @@
+https://api.xrlab.cepegra.be/api/characters?populate=deep
+{
+  "data": {
+    "appuser": {
+      "id": 1
+    },
+    "accessories": {
+      "hat": {
+        "name": "sphere45",
+        "color": null
+      },
+      "head": {
+        "name": "glassy-1",
+        "color": null
+      },
+      "body": {
+        "name": "casual-1",
+        "color": null
+      },
+      "hand_l": {
+        "name": "mitten-1",
+        "color": null
+      },
+      "hand_r": {
+        "name": "mitten-1",
+        "color": null
+      },
+      "feet": {
+        "name": "shoes-1",
+        "color": null
+      },
+      "background": {
+        "name": "sky-2",
+        "color": null
+      }
+    }
+  }
+}

@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AccessoriesStr } from "../../types/Character";
 import axios from "axios";
 
-const Menu = ({ setSelectedObj, getAccessories, setAccessories }: { setSelectedObj: any; getAccessories: AccessoriesStr; setAccessories: Dispatch<SetStateAction<AccessoriesStr>> }) => {
+const Menu = ({ setSelectedObj, getAccessories, setAccessories, PostToApi }: { setSelectedObj: any; getAccessories: AccessoriesStr; setAccessories: Dispatch<SetStateAction<AccessoriesStr>>; PostToApi: () => void }) => {
   /* --------- variables & states --------- */
   const [getListAccessories, setListAccessories] = useState<any>([{ id: 0, cat_name: "Loading...", Accessory: [] }]);
   const [getListImg, setListImg] = useState<any>({});
@@ -145,12 +145,35 @@ const Menu = ({ setSelectedObj, getAccessories, setAccessories }: { setSelectedO
         </>
       );
   };
+  let [getValidationMenu, setValidationMenu] = useState<boolean>(false);
+
+  const SwitchValidationMenu = () => {
+    setValidationMenu(!getValidationMenu);
+  };
   return (
     <>
       <div className="menu">
         <ul className="menu-list">
           <PrintMenu />
         </ul>
+      </div>
+      <div className="absolute z-10 inset-1/2">
+        {getValidationMenu ? (
+          <div className="card bg-base-100 w-fit ">
+            <div className="card-body">
+              <button className="btn btn-accent" onClick={PostToApi}>
+                Je valide
+              </button>
+              <button className="btn btn-accent" onClick={SwitchValidationMenu}>
+                Retur
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button onClick={SwitchValidationMenu} className="btn glass right-5 bottom-1/4">
+            Valider
+          </button>
+        )}
       </div>
       {getSubMenu.length > 0 ? (
         <button className="btn btn-menu" onClick={GoBack}>

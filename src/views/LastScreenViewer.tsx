@@ -39,7 +39,7 @@ const LastScreenViewer = ({ getUserId }: { getUserId: number | undefined }) => {
         characterResponse.forEach((element: Character) => {
           characters.push(element);
         });
-        let charNumber = 0;
+        let charNumber = characters.length - 1;
         //character[x].accessory_name
         let accessories = {
           hatN: characters[charNumber].attributes.accessories.hat.name,

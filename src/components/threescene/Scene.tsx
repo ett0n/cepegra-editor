@@ -22,7 +22,7 @@ export const Scene = ({ getAccessories, setAccessories }: { getAccessories: Acce
     <>
       {/* global scene controls */}
       <ambientLight intensity={0.5} />
-      <OrbitControls target={[0, 0, 0]} maxPolarAngle={1.45} />
+      <OrbitControls target={[0, 1.4, 0]} maxPolarAngle={1.45} />
       {/* skybox */}
       <mesh scale={21} position={[0, 0, 0]}>
         <sphereGeometry />

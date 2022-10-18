@@ -22,6 +22,7 @@ const SecondConnexionScreen = ({ setUserId }: { setUserId: Dispatch<SetStateActi
   });
   const [getUserExist, setUserExist] = useState<boolean>();
   const [getQrResult, setQrResult] = useState<string>("");
+  const [getQrId, setQrId] = useState<number>();
   const [getQrExist, setQrExist] = useState<boolean>(true);
   const [getToEditor, setToEditor] = useState<boolean>(false);
 
@@ -33,7 +34,7 @@ const SecondConnexionScreen = ({ setUserId }: { setUserId: Dispatch<SetStateActi
 
   /* ------------- R E A C T I O N ------------- */
   /* - - - - - - AXIOS - - - - - - */
-  /* - - - Get - - - */
+  /* - - - Get pseudo & password - - - */
   const GetUserValue = async () => {
     const checkUser = await Axios.get(`https://api.xrlab.cepegra.be/api/appusers?filters[pseudo][$eqi]=${getUserInput.pseudo}&filters[password][$eq]=${getUserInput.password}`);
     //console.log(checkUser)
@@ -50,19 +51,36 @@ const SecondConnexionScreen = ({ setUserId }: { setUserId: Dispatch<SetStateActi
       setToEditor(false);
     }
   };
+  /* - - - Get password - - - */
+  
+
+
   /* - - - - - -  SUBMIT - - - - - - */
   const HandleSubmit = (ev: React.FormEvent) => {
     ev.preventDefault();
     if (getUserInput.pseudo !== "" && getUserInput.password !== "") {
       console.log("champs remplis");
-      //comparer les input avec le résultat de l'api:
-      GetUserValue();
+      //Faire un switch: si QrResult !== "" => on récupère le result et on y trouve l'id (les 2 derniers caractères de l'url?)
+      if(getQrResult !== ""){
+        let qrUserId: any = getQrResult.match(/(id=\d+(\.\d)*)/i)
+        console.log("Qr id result: ", qrUserId)
+        console.log("Qr id result parsed: ", parseInt(qrUserId))
+        //setQrId(parseInt(qrUserId))
+        // => puis comparer le password avec api
+
+      } else {
+        //Si pas de Qr Reslut => comparer les inputs avec les résultats (pseudo et password) de l'api:
+        GetUserValue();
+      }
     } else {
       console.log("champs non remplis");
     }
     //mettre les champs à vide (ne fonctionne pas encore)
     setUserInput({ pseudo: "", password: "" });
   };
+
+  /* - - - - - - RETRIEVE ID FROM QrRESULT - - - - - - */
+
 
   /* - - - - - - INPUT CHANGE - - - - - - */
   /* - - -  input change Pseudo - - - */

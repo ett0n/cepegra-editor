@@ -38,6 +38,8 @@ const StartScreen = ({ setUserId }: { setUserId: Dispatch<SetStateAction<any>> }
     confirm: "Confirmation incorrecte",
   });
 
+  const [getToEditor, setToEditor] = useState<boolean>(false);
+
   /* ------------- R E A C T I O N ------------- */
   /* - - - - - - AXIOS - - - - - - */
   /* - - - Get - - - */
@@ -46,7 +48,6 @@ const StartScreen = ({ setUserId }: { setUserId: Dispatch<SetStateAction<any>> }
     //console.log(checkUser)
 
     if (checkUser.data.meta.pagination.total === 0) {
-      //alert("pseudo unique")
       setMsg({ ...getMsg, pseudo: "Pseudo obligatoire" });
       setApiUser(true);
     } else {
@@ -72,7 +73,6 @@ const StartScreen = ({ setUserId }: { setUserId: Dispatch<SetStateAction<any>> }
   const HandleSubmit = (ev: React.FormEvent) => {
     ev.preventDefault();
     if (getUserInput.password !== "" && getUserInput.pseudo !== "" && getConfirmPass === getUserInput.password) {
-      alert("password identique");
       /* SI OK: post new user */
       PostNewUser();
       //changer les css
@@ -81,16 +81,18 @@ const StartScreen = ({ setUserId }: { setUserId: Dispatch<SetStateAction<any>> }
       setConfirmPass("");
 
       //switch vers scene en ayant récupéré l'id du nouvel utilisateur
-      return <Navigate to="/Editor" replace={true}></Navigate>;
+      setToEditor(true);
     } else {
-      alert("password wrong");
       //changer les css
       document.querySelector(".errConfirm")!.classList.remove("opacity-0");
       document.querySelector(".inputConfirm")!.classList.add("input-error");
       setConfirmPass("");
     }
   };
-
+  //Validation de navigate
+  if (getToEditor === true) {
+    return <Navigate to="/editor" />;
+  }
   /* - - - - - - INPUT CHANGE - - - - - - */
   /* - - -  input change Pseudo - - - */
   const HandlePseudoChange = (ev: React.FormEvent) => {
@@ -146,7 +148,6 @@ const StartScreen = ({ setUserId }: { setUserId: Dispatch<SetStateAction<any>> }
       document.querySelector(".inputPass")!.classList.add("input-success");
       document.querySelector(".errPass")!.classList.remove("text-red-400");
     } else {
-      alert("pass incorrect");
       document.querySelector(".errPass")!.classList.add("text-red-400");
       document.querySelector(".inputPass")!.classList.add("input-error");
     }
@@ -200,7 +201,7 @@ const StartScreen = ({ setUserId }: { setUserId: Dispatch<SetStateAction<any>> }
           {/* ------- Déjà inscrit ? ------- */}
           <p>
             Déjà inscrit ?{" "}
-            <Link className="underline" to="/ConnexionScreen">
+            <Link className="underline" to="/connexionscreen">
               C'est par ici !{" "}
             </Link>
           </p>

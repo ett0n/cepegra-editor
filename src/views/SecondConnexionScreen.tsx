@@ -52,8 +52,6 @@ const SecondConnexionScreen = ({ setUserId }: { setUserId: Dispatch<SetStateActi
     }
   };
   /* - - - Get password - - - */
-  
-
 
   /* - - - - - -  SUBMIT - - - - - - */
   const HandleSubmit = (ev: React.FormEvent) => {
@@ -61,13 +59,12 @@ const SecondConnexionScreen = ({ setUserId }: { setUserId: Dispatch<SetStateActi
     if (getUserInput.pseudo !== "" && getUserInput.password !== "") {
       console.log("champs remplis");
       //Faire un switch: si QrResult !== "" => on récupère le result et on y trouve l'id (les 2 derniers caractères de l'url?)
-      if(getQrResult !== ""){
-        let qrUserId: any = getQrResult.match(/(id=\d+(\.\d)*)/i)
-        console.log("Qr id result: ", qrUserId)
-        console.log("Qr id result parsed: ", parseInt(qrUserId))
+      if (getQrResult !== "") {
+        let qrUserId: any = getQrResult.match(/(id=\d+(\.\d)*)/i);
+        console.log("Qr id result: ", qrUserId);
+        console.log("Qr id result parsed: ", parseInt(qrUserId));
         //setQrId(parseInt(qrUserId))
         // => puis comparer le password avec api
-
       } else {
         //Si pas de Qr Reslut => comparer les inputs avec les résultats (pseudo et password) de l'api:
         GetUserValue();
@@ -80,7 +77,6 @@ const SecondConnexionScreen = ({ setUserId }: { setUserId: Dispatch<SetStateActi
   };
 
   /* - - - - - - RETRIEVE ID FROM QrRESULT - - - - - - */
-
 
   /* - - - - - - INPUT CHANGE - - - - - - */
   /* - - -  input change Pseudo - - - */
@@ -96,7 +92,7 @@ const SecondConnexionScreen = ({ setUserId }: { setUserId: Dispatch<SetStateActi
 
   //Validation de navigate
   if (getToEditor === true) {
-    return <Navigate to="/Editor" />;
+    return <Navigate to="/editor" />;
   }
 
   //non résolu:
@@ -133,7 +129,7 @@ const SecondConnexionScreen = ({ setUserId }: { setUserId: Dispatch<SetStateActi
           {/* --------- Pas encore inscrit ? --------- */}
           <p className="col-span-2">
             Pas encore inscrit ?{" "}
-            <Link className="underline underline-offset-auto" to="/StartScreen">
+            <Link className="underline underline-offset-auto" to="/startscreen">
               C'est par ici !
             </Link>
           </p>

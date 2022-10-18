@@ -29,17 +29,18 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/">
-            <Route path="StartScreen" element={<StartScreen setUserId={setUserId} />}></Route>
-            <Route path="ConnexionScreen" element={<ConnexionScreen setUserId={setUserId} />}></Route>
-            <Route path="LoadingScreen" element={<LoadingScreen />}></Route>
+            <Route path="startscreen" element={<StartScreen setUserId={setUserId} />}></Route>
+            <Route path="connexionscreen" element={<ConnexionScreen setUserId={setUserId} />}></Route>
+            <Route path="loadingscreen" element={<LoadingScreen />}></Route>
             <Route
-              path="Editor"
+              path="editor"
               element={
                 <div id="canvas-container">
                   <Editor getUserId={getUserId} />
                 </div>
               }
             ></Route>
+            <Route path="lastscreen" element={<LastScreenViewer getUserId={getUserId} />}></Route>
           </Route>
         </Routes>
       </BrowserRouter>

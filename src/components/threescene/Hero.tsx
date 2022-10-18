@@ -22,46 +22,46 @@ export const Hero = ({ getAccessories, setAccessories }: { getAccessories: Acces
   let characters: Character[] = [];
 
   //fetch currenct character from API
-  const FetchCharacterApi = async (idUser: number) => {
-    await axios
-      .get(`${import.meta.env.VITE_API}appusers/${idUser}?populate[characters][populate][accessories][populate]=*`)
-      //if API down
-      .catch((error: string) => {
-        console.log("apidown or wrong id", error);
-      })
-      .then((response: any) => {
-        console.log("jecalllapi");
-        let characterResponse = response.data.data.attributes.characters.data;
-        characterResponse.forEach((element: Character) => {
-          characters.push(element);
-        });
-        let charNumber = 0;
-        //character[x].accessory_name
-        let accessories = {
-          hatN: characters[charNumber].attributes.accessories.hat.name,
-          headN: characters[charNumber].attributes.accessories.head.name,
-          bodyN: characters[charNumber].attributes.accessories.body.name,
-          hand_lN: characters[charNumber].attributes.accessories.hand_l.name,
-          hand_rN: characters[charNumber].attributes.accessories.hand_r.name,
-          feet: characters[charNumber].attributes.accessories.feet.name,
-        };
-        console.log(accessories);
-        //refreshing accessory state with API accessories
-        setAccessories({
-          hat: accessories.hatN !== null ? `/assets/accessories/hats/${accessories.hatN}/${accessories.hatN}.glb` : null,
-          head: accessories.headN !== null ? `/assets/accessories/heads/${accessories.headN}/${accessories.headN}.glb` : null,
-          body: accessories.bodyN !== null ? `/assets/accessories/bodies/${accessories.bodyN}/${accessories.bodyN}.glb` : null,
-          hand_l: accessories.hand_lN !== null ? `/assets/accessories/hands/${accessories.hand_lN}/${accessories.hand_lN}.glb` : null,
-          hand_r: accessories.hand_rN !== null ? `/assets/accessories/hands/${accessories.hand_rN}/${accessories.hand_rN}.glb` : null,
-          feet: accessories.feet !== null ? `/assets/accessories/feet/${accessories.feet}/${accessories.feet}.glb` : null,
-        });
-      });
-  };
+  // const FetchCharacterApi = async (idUser: number) => {
+  //   await axios
+  //     .get(`${import.meta.env.VITE_API}appusers/${idUser}?populate[characters][populate][accessories][populate]=*`)
+  //     //if API down
+  //     .catch((error: string) => {
+  //       console.log("apidown or wrong id", error);
+  //     })
+  //     .then((response: any) => {
+  //       console.log("jecalllapi");
+  //       let characterResponse = response.data.data.attributes.characters.data;
+  //       characterResponse.forEach((element: Character) => {
+  //         characters.push(element);
+  //       });
+  //       let charNumber = 0;
+  //       //character[x].accessory_name
+  //       let accessories = {
+  //         hatN: characters[charNumber].attributes.accessories.hat.name,
+  //         headN: characters[charNumber].attributes.accessories.head.name,
+  //         bodyN: characters[charNumber].attributes.accessories.body.name,
+  //         hand_lN: characters[charNumber].attributes.accessories.hand_l.name,
+  //         hand_rN: characters[charNumber].attributes.accessories.hand_r.name,
+  //         feet: characters[charNumber].attributes.accessories.feet.name,
+  //       };
+  //       console.log(accessories);
+  //       //refreshing accessory state with API accessories
+  //       setAccessories({
+  //         hat: accessories.hatN !== null ? `/assets/accessories/hats/${accessories.hatN}/${accessories.hatN}.glb` : null,
+  //         head: accessories.headN !== null ? `/assets/accessories/heads/${accessories.headN}/${accessories.headN}.glb` : null,
+  //         body: accessories.bodyN !== null ? `/assets/accessories/bodies/${accessories.bodyN}/${accessories.bodyN}.glb` : null,
+  //         hand_l: accessories.hand_lN !== null ? `/assets/accessories/hands/${accessories.hand_lN}/${accessories.hand_lN}.glb` : null,
+  //         hand_r: accessories.hand_rN !== null ? `/assets/accessories/hands/${accessories.hand_rN}/${accessories.hand_rN}.glb` : null,
+  //         feet: accessories.feet !== null ? `/assets/accessories/feet/${accessories.feet}/${accessories.feet}.glb` : null,
+  //       });
+  //     });
+  // };
 
   /* ------ useEffect and state refresh ------ */
-  useEffect(() => {
-    FetchCharacterApi(1);
-  }, []);
+  // useEffect(() => {
+  //   FetchCharacterApi(1);
+  // }, []);
 
   /* ------ component pour les accessoires dans le render ------ */
   const Accessory = ({ src, clone }: { src: string | null; clone?: boolean }) => {

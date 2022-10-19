@@ -69,11 +69,12 @@ const LastScreenViewer = ({ getUserId }: { getUserId: number | undefined }) => {
           <p>I'm alive !</p>
         </div>
         <Canvas>
-          <ambientLight intensity={0.5} />
+          <ambientLight intensity={0.7} />
+          <pointLight intensity={0.6} position={[0, 3, 3]} />
           <OrbitControls target={[0, 1.4, 0]} maxPolarAngle={1.45} enablePan={false} enableZoom={false} />
           <Hero getAccessories={getAccessories} setAccessories={setAccessories} />
         </Canvas>
-        <div className="m-10 flex justify-center items-center">
+        <div className="flex justify-center items-center">
           <div className="flex flex-col justify-center items-center">
             <p>{getPseudo}</p>
             <p className="p-10 text-2xl italic text-center">Rendez-vous dans le viewer !</p>
